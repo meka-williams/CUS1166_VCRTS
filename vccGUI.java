@@ -41,7 +41,7 @@ public class vccGUI extends JFrame implements ActionListener {
       add(fieldLastName);
       add(buttonTellMe);
 
-      buttonTellMe.addActionListener(this);
+        buttonTellMe.addActionListener(this);
 
     }
     
@@ -62,4 +62,3 @@ public class vccGUI extends JFrame implements ActionListener {
 
    
 }
-
