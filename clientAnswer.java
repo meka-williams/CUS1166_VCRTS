@@ -14,11 +14,13 @@ public class clientAnswer {
 
 
 		while (true) {
-			System.out.println("Enter user information or type 'quit' to exit:");
+			System.out.println(" Enter user information: \n Press enter to continue \n type 'quit' to exit:");
 			
 			String quit = scanner.nextLine();
 
 			if (quit.equalsIgnoreCase("quit")) {
+				System.out.println("Your sign up has been declined");
+
 				break;
 		}
 
@@ -38,7 +40,9 @@ public class clientAnswer {
 			client.add(user);
 
 
-			
+			break;
+		
+	
 			
 	}
 
