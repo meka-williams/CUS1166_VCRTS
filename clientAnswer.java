@@ -10,7 +10,7 @@ public class clientAnswer {
 	public static void main(String[] args) {
 	
     Scanner scanner = new Scanner(System.in);
-		List<Client> client = new ArrayList<>();
+		List<client> client = new ArrayList<>();
 
 
 		while (true) {
@@ -36,7 +36,7 @@ public class clientAnswer {
 			System.out.print("License Plate: ");
 			String licensePlate = scanner.nextLine();
 
-			Client user = new Client(firstName, lastName, Email, licensePlate);
+			client user = new client(firstName, lastName, Email, licensePlate);
 			client.add(user);
 
 
@@ -49,7 +49,7 @@ public class clientAnswer {
 	scanner.close();
 	  // Save user information to a text file
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("clientInformation.txt"))) {
-			for (Client user : client) {
+			for (client user : client) {
 					writer.write(user.toString());
 					writer.newLine();
 			}

@@ -1,11 +1,11 @@
-public class Client {
+public class client {
 
 	private String firstName;
   private String lastName;
   private String email;
   private String licensePlate;
   
-  public Client(String firstName, String lastName, String email , String licensePlate) {
+  public client(String firstName, String lastName, String email , String licensePlate) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
@@ -45,13 +45,7 @@ public class Client {
   }
   
   public String toString() {
-<<<<<<< HEAD
-    return "Client Information" + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Email: " + Email + "\n License Plate: " + licensePlate;
-}
 
-    }
-=======
-    return "Client Information{" + "/n First Name: " + firstName + "/n Last Name: " + lastName + "/n Email: " + email + "/n License Plate: " + licensePlate + '}';
+    return "Client Information{" + "/n First Name: " + firstName + "/n Last Name: " + lastName + "/n Email: " + email + "/n License Plate: " + licensePlate ;
   }
 }
->>>>>>> ae83bdc3dca833a2a3fd5501866b9b404e6227e1
