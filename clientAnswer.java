@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class clientAnswer {
+public class ClientAnswer {
 
 	public static void main(String[] args) {
 	
@@ -35,11 +35,7 @@ public class clientAnswer {
 			String licensePlate = scanner.nextLine();
 
 			Client user = new Client(firstName, lastName, Email, licensePlate);
-			client.add(user);
-
-
-			
-			
+			client.add(user);	
 	}
 
 	scanner.close();
