@@ -13,38 +13,42 @@ public class VCRTSGUI {
    private final int APP_HEIGHT = 600;
    
    public VCRTSGUI() {
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setLayout(new CardLayout());
-    frame.setTitle("Vehicular Cloud Real Time System");
-    frame.setSize(APP_WIDTH, APP_HEIGHT);
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setLayout(new CardLayout());
+      frame.setTitle("Vehicular Cloud Real Time System");
+      frame.setSize(APP_WIDTH, APP_HEIGHT);
 
-    createIntroScreen();
-    frame.setVisible(true);
+      startApp();
+      frame.setVisible(true);
    }
 
    public static void main(String[] args) {
-    new VCRTSGUI();
+      new VCRTSGUI();
+   }
+
+   public void startApp() {
+      createIntroScreen();
    }
 
    public void createIntroScreen() {
-    JPanel welcomePanel = new JPanel();
-    JLabel welcomeMessage = new JLabel("Welcome to this Vehicular Cloud Real Time System!");
-    JTextArea explanation = new JTextArea("Enter Explanation Here. As a test, I'm going to put a long piece of text in here and see how it shows on the GUI. Using this test, I will be able to judge");
-    JButton signUp = new JButton("Sign Up");
-    JButton login = new JButton("Login");
+      JPanel welcomePanel = new JPanel();
+      JLabel welcomeMessage = new JLabel("Welcome to this Vehicular Cloud Real Time System!");
+      JTextArea explanation = new JTextArea("Enter Explanation Here. As a test, I'm going to put a long piece of text in here and see how it shows on the GUI. Using this test, I will be able to judge");
+      JButton signUp = new JButton("Sign Up");
+      JButton login = new JButton("Login");
 
-    explanation.setEditable(false);
-    explanation.setLineWrap(true);
-    explanation.setWrapStyleWord(true);
-    explanation.setSize(APP_WIDTH - 50, APP_HEIGHT - 50);
+      explanation.setEditable(false);
+      explanation.setLineWrap(true);
+      explanation.setWrapStyleWord(true);
+      explanation.setSize(APP_WIDTH - 50, APP_HEIGHT - 50);
 
-    welcomePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
-    welcomePanel.setBounds(0, 0, APP_WIDTH, APP_HEIGHT);
+      welcomePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
+      welcomePanel.setBounds(0, 0, APP_WIDTH, APP_HEIGHT);
 
-    welcomePanel.add(welcomeMessage);
-    welcomePanel.add(explanation);
-    welcomePanel.add(signUp);
-    welcomePanel.add(login);
-    frame.add(welcomePanel, "Intro Screen");
+      welcomePanel.add(welcomeMessage);
+      welcomePanel.add(explanation);
+      welcomePanel.add(signUp);
+      welcomePanel.add(login);
+      frame.add(welcomePanel, "Intro Screen");
    }
 }
