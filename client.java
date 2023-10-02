@@ -39,7 +39,7 @@ public class Client {
 
 
   public String toString() {
-    return "Client Information{" + "/n First Name: " + firstName + "/n Last Name: " + lastName + "/n Email: " + Email + "/n License Plate: " + licensePlate + '}';
+    return "Client Information" + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Email: " + Email + "\n License Plate: " + licensePlate;
 }
 
     }
