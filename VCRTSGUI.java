@@ -1,6 +1,10 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +18,12 @@ public class VCRTSGUI {
    private JFrame frame = new JFrame();
    private final int APP_WIDTH = 480;
    private final int APP_HEIGHT = 600;
+   private final String INTRO_PAGE_NAME = "Intro Page";
+   private final String SIGNUP_PAGE_NAME = "";
+   private final String LOGIN_PAGE_NAME = "Login Page";
+   private ArrayList<Button> pageSwitchButtons = new ArrayList<Button>();
+   private ArrayList<String> screens = new ArrayList<String>();
+   private PageSwitcher switcher = new PageSwitcher();
    
    public VCRTSGUI() {
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,7 +40,7 @@ public class VCRTSGUI {
    }
 
    public void startApp() {
-      //createIntroScreen();
+      createIntroScreen();
       createLoginScreen();
    }
 
@@ -47,6 +57,9 @@ public class VCRTSGUI {
       explanation.setWrapStyleWord(true);
       explanation.setSize(APP_WIDTH - 50, APP_HEIGHT - 50);
 
+      login.addActionListener(switcher);
+      pageSwitchButtons.add(new Button(LOGIN_PAGE_NAME, login));
+
       welcomePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
       welcomePanel.setBounds(0, 0, APP_WIDTH, APP_HEIGHT);
 
@@ -54,7 +67,8 @@ public class VCRTSGUI {
       welcomePanel.add(explanation);
       welcomePanel.add(signUp);
       welcomePanel.add(login);
-      frame.add(welcomePanel, "Intro Screen");
+      frame.add(welcomePanel, INTRO_PAGE_NAME);
+      screens.add(INTRO_PAGE_NAME);
    }
 
    public void createLoginScreen() {
@@ -82,6 +96,54 @@ public class VCRTSGUI {
       loginPanel.add(usernameSubpanel);
       loginPanel.add(passwordSubpanel);
       loginPanel.add(login);
-      frame.add(loginPanel, "Login Screen");
+      frame.add(loginPanel, LOGIN_PAGE_NAME);
+      screens.add(LOGIN_PAGE_NAME);
+   }
+
+   class Button {
+      private JButton button;
+      private String title;
+
+      public Button(String title, JButton button) {
+         this.title = title;
+         this.button = button;
+      }
+
+      public JButton getButton() {
+         return button;
+      }
+
+      public void setButton(JButton button) {
+         this.button = button;
+      }
+
+      public String getTitle() {
+         return title;
+      }
+
+      public void setTitle(String title) {
+         this.title = title;
+      }
+   }
+   
+   class PageSwitcher implements ActionListener {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         String requestedPage = "";
+
+         for(int i = 0; i < pageSwitchButtons.size(); i++) {
+            if(e.getSource().equals(pageSwitchButtons.get(i).getButton())) {
+               requestedPage = pageSwitchButtons.get(i).getTitle();
+            }
+         }
+
+         for(int i = 0; i < screens.size(); i++) {
+            if(requestedPage.equals(screens.get(i))) {
+               ((CardLayout)frame.getContentPane().getLayout()).show(frame.getContentPane(), screens.get(i));
+            }
+         }
+      }
+      
    }
 }
