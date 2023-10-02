@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 
@@ -5,7 +6,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class VCRTSGUI {
    private JFrame frame = new JFrame();
@@ -27,7 +30,8 @@ public class VCRTSGUI {
    }
 
    public void startApp() {
-      createIntroScreen();
+      //createIntroScreen();
+      createLoginScreen();
    }
 
    public void createIntroScreen() {
@@ -38,6 +42,7 @@ public class VCRTSGUI {
       JButton login = new JButton("Login");
 
       explanation.setEditable(false);
+      explanation.setFocusable(false);
       explanation.setLineWrap(true);
       explanation.setWrapStyleWord(true);
       explanation.setSize(APP_WIDTH - 50, APP_HEIGHT - 50);
@@ -50,5 +55,33 @@ public class VCRTSGUI {
       welcomePanel.add(signUp);
       welcomePanel.add(login);
       frame.add(welcomePanel, "Intro Screen");
+   }
+
+   public void createLoginScreen() {
+      JPanel loginPanel = new JPanel();
+      JLabel message = new JLabel("Welcome Back User! Please Login Below");
+      JPanel usernameSubpanel = new JPanel();
+      JLabel usernameLabel = new JLabel("Username: ");
+      JTextField username = new JTextField(20);
+      JPanel passwordSubpanel = new JPanel();
+      JLabel passwordLabel = new JLabel("Password: ");
+      JPasswordField password = new JPasswordField(20);
+      JButton login = new JButton("Login");
+
+      usernameSubpanel.setLayout(new BorderLayout(5, 0));
+      usernameSubpanel.add(usernameLabel, BorderLayout.WEST);
+      usernameSubpanel.add(username, BorderLayout.EAST);
+
+      passwordSubpanel.setLayout(new BorderLayout(5, 0));
+      passwordSubpanel.add(passwordLabel, BorderLayout.WEST);
+      passwordSubpanel.add(password, BorderLayout.EAST);
+
+      loginPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
+
+      loginPanel.add(message);
+      loginPanel.add(usernameSubpanel);
+      loginPanel.add(passwordSubpanel);
+      loginPanel.add(login);
+      frame.add(loginPanel, "Login Screen");
    }
 }
