@@ -24,6 +24,8 @@ public class VCRTSGUI {
    private ArrayList<Button> pageSwitchButtons = new ArrayList<Button>();
    private ArrayList<String> screens = new ArrayList<String>();
    private PageSwitcher switcher = new PageSwitcher();
+   private UserVerifier verifier = new UserVerifier();
+   private Database database = new Database();
    
    public VCRTSGUI() {
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,9 +88,15 @@ public class VCRTSGUI {
       usernameSubpanel.add(usernameLabel, BorderLayout.WEST);
       usernameSubpanel.add(username, BorderLayout.EAST);
 
+      username.addActionListener(verifier);
+
       passwordSubpanel.setLayout(new BorderLayout(5, 0));
       passwordSubpanel.add(passwordLabel, BorderLayout.WEST);
       passwordSubpanel.add(password, BorderLayout.EAST);
+
+      password.addActionListener(verifier);
+
+      login.addActionListener(verifier);
 
       loginPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 
@@ -125,9 +133,8 @@ public class VCRTSGUI {
          this.title = title;
       }
    }
-   
-   class PageSwitcher implements ActionListener {
 
+   class PageSwitcher implements ActionListener {
       @Override
       public void actionPerformed(ActionEvent e) {
          String requestedPage = "";
@@ -144,6 +151,37 @@ public class VCRTSGUI {
             }
          }
       }
-      
+   }
+
+   class UserVerifier implements ActionListener {
+      private String username = "";
+      private String password = "";
+
+      public String getUsername() {
+         return username;
+      }
+
+      public void setUsername(String username) {
+         this.username = username;
+      }
+
+      public String getPassword() {
+         return password;
+      }
+
+      public void setPassword(String password) {
+         this.password = password;
+      }
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         if(e.getClass().getName().equals("JTextField"))
+            username = ((JTextField)e.getSource()).getText();
+         if(e.getClass().getName().equals("JPasswordField"))
+            password = String.valueOf(((JPasswordField)e.getSource()).getPassword());
+
+         
+      }
+
    }
 }
