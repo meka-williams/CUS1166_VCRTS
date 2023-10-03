@@ -112,7 +112,7 @@ public class VCRTSGUI {
       frame.add(loginPanel, LOGIN_PAGE_NAME);
       screens.add(LOGIN_PAGE_NAME);
 
-      back.addActionListener(switcher);
+      back.addActionListener(switcher); //back button
       loginPanel.add(back);
    }
 
