@@ -1,4 +1,4 @@
-public class owner {
+public class Owner {
     private String firstName;
     private String lastname;
     private String email;
@@ -7,7 +7,7 @@ public class owner {
     private String licensePlate;
     private String residencyTime; 
 
-     public void Owner(String firstName, String lastName, String email, String phoneNumber, String vehicleInfo,
+     public Owner(String firstName, String lastName, String email, String phoneNumber, String vehicleInfo,
                  String licensePlate, String residencyTime) {
         this.firstName = firstName;
         this.lastname = lastName;

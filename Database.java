@@ -49,10 +49,10 @@ public class Database {
 
 	private File database = new File("Database.txt");
 	private String data;
-	private ArrayList<client> clients;
+	private ArrayList<Client> clients;
 
 	public Database() {
 		data = "";
-		clients = new ArrayList<client>();
+		clients = new ArrayList<Client>();
 	}
 }
