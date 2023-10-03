@@ -1,12 +1,5 @@
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import javax.xml.crypto.Data;
 
 public class Database {
 
@@ -56,10 +49,10 @@ public class Database {
 
 	private File database = new File("Database.txt");
 	private String data;
-	private ArrayList<Client> clients;
+	private ArrayList<client> clients;
 
 	public Database() {
 		data = "";
-		clients = new ArrayList<Client>();
+		clients = new ArrayList<client>();
 	}
 }

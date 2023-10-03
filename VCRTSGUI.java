@@ -19,7 +19,7 @@ public class VCRTSGUI {
    private final int APP_WIDTH = 480;
    private final int APP_HEIGHT = 600;
    private final String INTRO_PAGE_NAME = "Intro Page";
-   private final String SIGNUP_PAGE_NAME = "";
+   private final String SIGNUP_PAGE_NAME = "Sign Up Page";
    private final String LOGIN_PAGE_NAME = "Login Page";
    private ArrayList<Button> pageSwitchButtons = new ArrayList<Button>();
    private ArrayList<String> screens = new ArrayList<String>();
@@ -44,6 +44,7 @@ public class VCRTSGUI {
    public void startApp() {
       createIntroScreen();
       createLoginScreen();
+      createSignUpScreen();
    }
 
    public void createIntroScreen() {
@@ -61,6 +62,9 @@ public class VCRTSGUI {
 
       login.addActionListener(switcher);
       pageSwitchButtons.add(new Button(LOGIN_PAGE_NAME, login));
+
+      signUp.addActionListener(switcher);
+      pageSwitchButtons.add(new Button(SIGNUP_PAGE_NAME, signUp));
 
       welcomePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
       welcomePanel.setBounds(0, 0, APP_WIDTH, APP_HEIGHT);
@@ -106,6 +110,44 @@ public class VCRTSGUI {
       loginPanel.add(login);
       frame.add(loginPanel, LOGIN_PAGE_NAME);
       screens.add(LOGIN_PAGE_NAME);
+   }
+
+   public void createSignUpScreen() {
+
+      JPanel signUpPanel = new JPanel();
+      JLabel header = new JLabel("Welcome, Please Enter The Following Information");
+
+      JPanel usernameSubpanel = new JPanel();
+      JLabel usernameLabel = new JLabel("Enter Username: ");
+      JTextField username = new JTextField(20);
+      usernameSubpanel.setLayout(new BorderLayout(5, 0));
+      usernameSubpanel.add(usernameLabel, BorderLayout.WEST);
+      usernameSubpanel.add(username, BorderLayout.EAST);
+      username.addActionListener(verifier);
+
+      JPanel passwordSubpanel = new JPanel();
+      JLabel passwordLabel = new JLabel("Password: ");
+      JPasswordField password = new JPasswordField(20);
+      passwordSubpanel.setLayout(new BorderLayout(5, 0));
+      passwordSubpanel.add(passwordLabel, BorderLayout.WEST);
+      passwordSubpanel.add(password, BorderLayout.EAST);
+      password.addActionListener(verifier);
+
+      JButton login = new JButton("Login");
+      login.addActionListener(verifier);
+
+      signUpPanel.add(header);
+      signUpPanel.add(usernameSubpanel);
+      signUpPanel.add(passwordSubpanel);
+      signUpPanel.add(login);
+
+      frame.add(signUpPanel, SIGNUP_PAGE_NAME);
+      screens.add(SIGNUP_PAGE_NAME);
+
+      signUpPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
+
+
+
    }
 
    class Button {
