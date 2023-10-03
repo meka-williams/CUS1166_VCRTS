@@ -1,14 +1,15 @@
-public class Owner {
+public class Owner extends User {
     private String firstName;
     private String lastname;
     private String email;
     private String phoneNumber;
     private String vehicleInfo;
     private String licensePlate;
-    private String residencyTime; 
+    private String residencyTime;
 
-     public Owner(String firstName, String lastName, String email, String phoneNumber, String vehicleInfo,
-                 String licensePlate, String residencyTime) {
+    public Owner(String firstName, String lastName, String email, String phoneNumber, String vehicleInfo, 
+    String licensePlate, String residencyTime, String username, String password) {
+        super(username, password);
         this.firstName = firstName;
         this.lastname = lastName;
         this.email = email;
@@ -87,5 +88,3 @@ public class Owner {
                 "\n}";
     }
 }
-
-

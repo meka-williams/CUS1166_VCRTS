@@ -50,9 +50,60 @@ public class Database {
 	private File database = new File("Database.txt");
 	private String data;
 	private ArrayList<Client> clients;
+	private ArrayList<Owner> owners;
 
 	public Database() {
 		data = "";
 		clients = new ArrayList<Client>();
+		owners = new ArrayList<Owner>();
+	}
+
+	public boolean isClient(String username) {
+		for(Client c: clients) {
+			if(c.getUsername().equals(username))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isClient(Client thisClient) {
+		for(Client c: clients) {
+			if(c.equals(thisClient))
+				return true;
+		}
+
+		return false;
+	}
+
+	public Client getClient(String username) {
+		for(Client c: clients) {
+			if(c.getUsername().equals(username))
+				return c;
+		}
+		return null;
+	}
+
+	public void addClient(Client c) {
+		clients.add(c);
+	}
+
+	public Client[] getClients() {
+		Client[] c = new Client[clients.size()];
+		for(int i = 0; i < c.length; i++) {
+			c[i] = clients.get(i);
+		}
+		return c;
+	}
+
+	public boolean isOwner(String username) {
+		for(Owner o: owners) {
+			if(o.getUsername().equals(username))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isUser(String username) {
+		return isClient(username) || isOwner(username);
 	}
 }

@@ -1,15 +1,29 @@
-public class Client {
+import java.util.ArrayList;
+
+public class Client extends User {
 
 	private String firstName;
   private String lastName;
   private String email;
   private String licensePlate;
+  private ArrayList<Job> jobs;
+
+  public Client(String username, String password) {
+    super(username, password);
+    firstName = "";
+    lastName = "";
+    email = "";
+    licensePlate = "";
+    jobs = new ArrayList<Job>();
+  }
   
-  public Client(String firstName, String lastName, String email , String licensePlate) {
+  public Client(String firstName, String lastName, String email , String licensePlate, String username, String password) {
+    super(username, password);
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
     this.licensePlate = licensePlate;
+    jobs = new ArrayList<Job>();
   }
 
   public String getFirstName() {
@@ -43,9 +57,13 @@ public class Client {
   public void setLicensePlate(String licensePlate) {
     this.licensePlate = licensePlate;
   }
-  
-  public String toString() {
 
-    return "Client Information{" + "/n First Name: " + firstName + "/n Last Name: " + lastName + "/n Email: " + email + "/n License Plate: " + licensePlate ;
+  public void addJobToQueue(Job j) {
+    jobs.add(j);
+  }
+  
+  @Override
+  public String toString() {
+    return "Client Information{" + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Email: " + email + "\n License Plate: " + licensePlate + "\n Username: " + this.getUsername();
   }
 }

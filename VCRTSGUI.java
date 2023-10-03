@@ -1,12 +1,18 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,10 +27,14 @@ public class VCRTSGUI {
    private final String INTRO_PAGE_NAME = "Intro Page";
    private final String SIGNUP_PAGE_NAME = "Sign Up Page";
    private final String LOGIN_PAGE_NAME = "Login Page";
+   private final String MAIN_PAGE_NAME = "Main Page";
+   private final String CREATE_JOB_REQUEST_PAGE_NAME = "Create Job Request Page";
    private ArrayList<Button> pageSwitchButtons = new ArrayList<Button>();
    private ArrayList<String> screens = new ArrayList<String>();
    private PageSwitcher switcher = new PageSwitcher();
    private UserVerifier verifier = new UserVerifier();
+   private JobRequestListener jobRequestListener = new JobRequestListener();
+   private User currentUser;
    private Database database = new Database();
    
    public VCRTSGUI() {
@@ -32,6 +42,7 @@ public class VCRTSGUI {
       frame.setLayout(new CardLayout());
       frame.setTitle("Vehicular Cloud Real Time System");
       frame.setSize(APP_WIDTH, APP_HEIGHT);
+      frame.setResizable(false);
 
       startApp();
       frame.setVisible(true);
@@ -45,12 +56,14 @@ public class VCRTSGUI {
       createIntroScreen();
       createLoginScreen();
       createSignUpScreen();
+      createMainPage();
+      createJobRequestPage();
    }
 
    public void createIntroScreen() {
       JPanel welcomePanel = new JPanel();
       JLabel welcomeMessage = new JLabel("Welcome to this Vehicular Cloud Real Time System!");
-      JTextArea explanation = new JTextArea("Enter Explanation Here. As a test, I'm going to put a long piece of text in here and see how it shows on the GUI. Using this test, I will be able to judge");
+      JTextArea explanation = new JTextArea("If you already have an account with us, select \"Login\" below. If this is your first time using this vehicular cloud system, click the \"Sign Up\" button.");
       JButton signUp = new JButton("Sign Up");
       JButton login = new JButton("Login");
 
@@ -103,59 +116,172 @@ public class VCRTSGUI {
 
       login.addActionListener(verifier);
 
+      back.addActionListener(switcher); //back button
+      pageSwitchButtons.add(new Button(INTRO_PAGE_NAME, back));
+
       loginPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 
       loginPanel.add(message);
       loginPanel.add(usernameSubpanel);
       loginPanel.add(passwordSubpanel);
       loginPanel.add(login);
+      loginPanel.add(back);
       frame.add(loginPanel, LOGIN_PAGE_NAME);
       screens.add(LOGIN_PAGE_NAME);
-
-      back.addActionListener(switcher); //back button
-      loginPanel.add(back);
    }
 
    public void createSignUpScreen() {
-
       JPanel signUpPanel = new JPanel();
       JLabel header = new JLabel("Welcome, Please Enter The Following Information");
-
       JPanel usernameSubpanel = new JPanel();
       JLabel usernameLabel = new JLabel("Enter Username: ");
       JTextField username = new JTextField(20);
+      JPanel passwordSubpanel = new JPanel();
+      JLabel passwordLabel = new JLabel("Enter Password: ");
+      JPasswordField password = new JPasswordField(20);
+      JButton signup = new JButton("Sign Up");
+      JButton back = new JButton("Back");
+
       usernameSubpanel.setLayout(new BorderLayout(5, 0));
       usernameSubpanel.add(usernameLabel, BorderLayout.WEST);
       usernameSubpanel.add(username, BorderLayout.EAST);
-      username.addActionListener(verifier);
+      username.addKeyListener(verifier);
 
-      JPanel passwordSubpanel = new JPanel();
-      JLabel passwordLabel = new JLabel("Password: ");
-      JPasswordField password = new JPasswordField(20);
       passwordSubpanel.setLayout(new BorderLayout(5, 0));
       passwordSubpanel.add(passwordLabel, BorderLayout.WEST);
       passwordSubpanel.add(password, BorderLayout.EAST);
-      password.addActionListener(verifier);
-
-      JButton login = new JButton("Login");
-      login.addActionListener(verifier);
+      password.addKeyListener(verifier);
+      
+      signup.addActionListener(verifier);
+ 
+      back.addActionListener(switcher);
+      pageSwitchButtons.add(new Button(INTRO_PAGE_NAME, back));
+      
+      signUpPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 
       signUpPanel.add(header);
       signUpPanel.add(usernameSubpanel);
       signUpPanel.add(passwordSubpanel);
-      signUpPanel.add(login);
-
+      signUpPanel.add(signup);
+      signUpPanel.add(back);
       frame.add(signUpPanel, SIGNUP_PAGE_NAME);
       screens.add(SIGNUP_PAGE_NAME);
+   }
 
+   public void createMainPage() {
+      JPanel mainPanel = new JPanel();
+      JPanel headerSubPanel = new JPanel();
+      JLabel header = new JLabel("Select whether you would like to rent out your car as an owner or");
+      JLabel header2 = new JLabel("submit a job request as a client below.");
+      JButton owner = new JButton("Rent Car As Owner");
+      JButton client = new JButton("Request Job As Client");
+
+      header2.setHorizontalAlignment(JLabel.CENTER);
+
+      client.addActionListener(switcher);
+      pageSwitchButtons.add(new Button(CREATE_JOB_REQUEST_PAGE_NAME, client));
+
+      headerSubPanel.setLayout(new BorderLayout());
+      headerSubPanel.add(header, BorderLayout.NORTH);
+      headerSubPanel.add(header2, BorderLayout.SOUTH);
+
+      mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 100));
+
+      mainPanel.add(headerSubPanel);
+      mainPanel.add(owner);
+      mainPanel.add(client);
+      frame.add(mainPanel, MAIN_PAGE_NAME);
+      screens.add(MAIN_PAGE_NAME);
+   }
+
+   public void createJobRequestPage() {
+      JPanel jobRequestPanel = new JPanel();
+      JLabel header = new JLabel("Fill in the following information to submit a job request");
+      JPanel jobTitleSubPanel = new JPanel();
+      JLabel jobTitleLabel = new JLabel("Job Title: ");
+      JTextField jobTitle = new JTextField(20);
+      JPanel jobDescriptionSubPanel = new JPanel();
+      JLabel jobDescriptionLabel = new JLabel("Job Description: ");
+      JTextArea jobDescription = new JTextArea(10, 30);
+      JPanel approximateJobDurationSubPanel = new JPanel();
+      JLabel approximateJobDurationLabel = new JLabel("Job Duration Time: ");
+      JTextField approximateJobDuration = new JTextField(1);
+      String[] timeOptions = {"hours", "minutes"};
+      JComboBox<String> jobDurationTimes = new JComboBox<String>(timeOptions);
+      JPanel jobDeadlineSubPanel = new JPanel();
+      JLabel jobDeadlineLabel = new JLabel("Job Deadline (mm/dd/yyyy)");
+      JPanel dateSubPanel = new JPanel(new GridLayout(1, 5));
+      JTextField month = new JTextField(2);
+      JTextField day = new JTextField(2);
+      JTextField year = new JTextField(4);
+      JLabel divider = new JLabel("/");
+      JLabel divider2 = new JLabel("/");
+      JButton submit = new JButton("Submit Job");
       JButton back = new JButton("Back");
+
+      jobTitle.setName("Job Title");
+      jobTitle.addKeyListener(jobRequestListener);
+
+      jobTitleSubPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+      jobTitleSubPanel.add(jobTitleLabel);
+      jobTitleSubPanel.add(jobTitle);
+
+      jobDescription.setName("Job Description");
+      jobDescription.addKeyListener(jobRequestListener);
+      
+      jobDescriptionSubPanel.setLayout(new BorderLayout());
+      jobDescriptionSubPanel.add(jobDescriptionLabel, BorderLayout.NORTH);
+      jobDescriptionSubPanel.add(jobDescription, BorderLayout.SOUTH);
+
+      approximateJobDuration.setName("Job Duration Time");
+      approximateJobDuration.addKeyListener(jobRequestListener);
+
+      jobDurationTimes.addItemListener(jobRequestListener);
+      
+      approximateJobDurationSubPanel.setLayout(new GridLayout(1, 3, 10, 0));
+      approximateJobDurationSubPanel.add(approximateJobDurationLabel);
+      approximateJobDurationSubPanel.add(approximateJobDuration);
+      approximateJobDurationSubPanel.add(jobDurationTimes);
+
+      month.setName("Month");
+      month.addKeyListener(jobRequestListener);
+      day.setName("Day");
+      day.addKeyListener(jobRequestListener);
+      year.setName("Year");
+      year.addKeyListener(jobRequestListener);
+      
+      divider.setHorizontalAlignment(JLabel.CENTER);
+      divider.setPreferredSize(new Dimension(1, 1));
+
+      divider2.setHorizontalAlignment(JLabel.CENTER);
+      divider2.setPreferredSize(new Dimension(1, 1));
+
+      dateSubPanel.add(month);
+      dateSubPanel.add(divider);
+      dateSubPanel.add(day);
+      dateSubPanel.add(divider2);
+      dateSubPanel.add(year);
+
+      submit.addActionListener(jobRequestListener);
+
       back.addActionListener(switcher);
-      signUpPanel.add(back);
+      pageSwitchButtons.add(new Button(MAIN_PAGE_NAME, back));
 
-      signUpPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
+      jobDeadlineSubPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+      jobDeadlineSubPanel.setSize(40, 40);
+      jobDeadlineSubPanel.add(jobDeadlineLabel);
+      jobDeadlineSubPanel.add(dateSubPanel);
 
-
-
+      jobRequestPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 30));
+      jobRequestPanel.add(header);
+      jobRequestPanel.add(jobTitleSubPanel);
+      jobRequestPanel.add(jobDescriptionSubPanel);
+      jobRequestPanel.add(approximateJobDurationSubPanel);
+      jobRequestPanel.add(jobDeadlineSubPanel);
+      jobRequestPanel.add(submit);
+      jobRequestPanel.add(back);
+      frame.add(jobRequestPanel, CREATE_JOB_REQUEST_PAGE_NAME);
+      screens.add(CREATE_JOB_REQUEST_PAGE_NAME);
    }
 
    class Button {
@@ -197,13 +323,15 @@ public class VCRTSGUI {
 
          for(int i = 0; i < screens.size(); i++) {
             if(requestedPage.equals(screens.get(i))) {
+               verifier.setUsername("");
+               verifier.setPassword("");
                ((CardLayout)frame.getContentPane().getLayout()).show(frame.getContentPane(), screens.get(i));
             }
          }
       }
    }
 
-   class UserVerifier implements ActionListener {
+   class UserVerifier implements ActionListener, KeyListener {
       private String username = "";
       private String password = "";
 
@@ -225,12 +353,135 @@ public class VCRTSGUI {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-         if(e.getClass().getName().equals("JTextField"))
-            username = ((JTextField)e.getSource()).getText();
-         if(e.getClass().getName().equals("JPasswordField"))
-            password = String.valueOf(((JPasswordField)e.getSource()).getPassword());
+         if(((JButton)e.getSource()).getText().equals("Sign Up")) {
+            if(!username.equals("") && !password.equals("") && !database.isUser(username)) {
+               currentUser = new User(username, password);
+               showMainPage();
+            }
+            else
+               System.out.println("An error occurred, please try again.");
+         }
+      }
 
-         
+      public void showMainPage() {
+         ((CardLayout)frame.getContentPane().getLayout()).show(frame.getContentPane(), MAIN_PAGE_NAME);
+      }
+
+      @Override
+      public void keyTyped(KeyEvent e) {
+         //Currently Unneeded        
+      }
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+         //Currently Unneeded
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+         if(e.getSource().getClass().getSimpleName().equals("JTextField")) {  
+            username = ((JTextField)e.getSource()).getText();
+         }
+         if(e.getSource().getClass().getSimpleName().equals("JPasswordField")) {
+            password = String.valueOf(((JPasswordField)e.getSource()).getPassword());
+         }
+      }
+
+   }
+
+   class JobRequestListener extends Job implements KeyListener, ActionListener, ItemListener {
+      private String timeChoice = "hours";
+      private String month;
+      private String day;
+      private String year;
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         if(timeChoice.equals("hours"))
+            this.setDurationTime(this.getDurationTime() * 60);
+
+         if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() >= 0 && 
+         !month.equals("") && !day.equals("") && !year.equals("")) {
+            System.out.println("Job submitted successfully");
+            this.setDeadline(month + "/" + day + "/" + year);
+
+            Client thisClient;
+            if(database.isUser(currentUser.getUsername())) {
+               thisClient = database.getClient(currentUser.getUsername());
+            }
+            else {
+               thisClient = new Client(currentUser.getUsername(), currentUser.getPassword());
+            }
+
+            Job newJob = new Job(this.getTitle(), this.getDescription(), this.getDurationTime(), this.getDeadline());
+            thisClient.addJobToQueue(newJob);
+            if(!database.isClient(thisClient)) {
+               database.addClient(thisClient);
+            }
+            for(Client c: database.getClients()) {
+               System.out.println(c);
+            }
+         }
+         else {
+            System.out.println("An error occurred. Please ensure you filled out all of the text boxes correctly.");
+         }
+      }
+
+      @Override
+      public void keyTyped(KeyEvent e) {
+      }
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+         switch(e.getSource().getClass().getSimpleName()) {
+            
+            case "JTextArea": {
+               this.setDescription(((JTextArea)e.getSource()).getText());
+               break;
+            }
+
+            case "JTextField": {
+               switch(((JTextField)e.getSource()).getName()) {
+                  
+                  case "Job Title": {
+                     this.setTitle(((JTextField)e.getSource()).getText());
+                     break;
+                  }
+                  case "Job Duration Time": {
+                     try {
+                        int time = Integer.parseInt(((JTextField)e.getSource()).getText());
+                        this.setDurationTime(time);
+                     } 
+                     catch(NumberFormatException n) {
+                        this.setDurationTime(-1);
+                     }
+                     break;
+                  }
+                  case "Month": {
+                     month = ((JTextField)e.getSource()).getText();
+                     break;
+                  }
+                  case "Day": {
+                     day = ((JTextField)e.getSource()).getText();
+                     break;
+                  }
+                  case "Year": {
+                     year = ((JTextField)e.getSource()).getText();
+                     break;
+                  }
+               }
+               break;
+            }
+         }
+      }
+
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+         timeChoice = (String)((JComboBox)e.getSource()).getSelectedItem();
       }
 
    }
