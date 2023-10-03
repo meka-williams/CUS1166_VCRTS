@@ -87,6 +87,7 @@ public class VCRTSGUI {
       JLabel passwordLabel = new JLabel("Password: ");
       JPasswordField password = new JPasswordField(20);
       JButton login = new JButton("Login");
+      JButton back = new JButton("Back");
 
       usernameSubpanel.setLayout(new BorderLayout(5, 0));
       usernameSubpanel.add(usernameLabel, BorderLayout.WEST);
@@ -110,6 +111,9 @@ public class VCRTSGUI {
       loginPanel.add(login);
       frame.add(loginPanel, LOGIN_PAGE_NAME);
       screens.add(LOGIN_PAGE_NAME);
+
+      back.addActionListener(switcher);
+      loginPanel.add(back);
    }
 
    public void createSignUpScreen() {
@@ -143,6 +147,10 @@ public class VCRTSGUI {
 
       frame.add(signUpPanel, SIGNUP_PAGE_NAME);
       screens.add(SIGNUP_PAGE_NAME);
+
+      JButton back = new JButton("Back");
+      back.addActionListener(switcher);
+      signUpPanel.add(back);
 
       signUpPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 
