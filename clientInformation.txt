@@ -1,6 +1,0 @@
-//Note to all developers do not commit this txt file
-
-
-
-
-Client Information{/n First Name: krish/n Last Name: patel/n Email: Krish492003/n License Plate: 345433
