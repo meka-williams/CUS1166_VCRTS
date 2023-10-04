@@ -52,7 +52,7 @@ public class Job {
 
     @Override
     public String toString() {
-        return "Title: " + title + "\nDescription: " + description + "\nDuration Time: " + 
-            durationTime + " minutes \nDeadline: " + deadline;
+        return "|Title: " + title + "|Description: " + description + "|Duration Time: " + 
+            durationTime + " minutes |Deadline: " + deadline;
     }
 }

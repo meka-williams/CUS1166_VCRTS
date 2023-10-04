@@ -1,5 +1,8 @@
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Database {
 
@@ -142,5 +145,19 @@ public class Database {
 		}
 
 		return false;
+	}
+
+	public void updateDatabase(String action, User user) {
+		Date d = new Date();
+		String newData = action + "|" + user + "|Time: " + d + "\n";
+		data = data.concat(newData);
+
+		try {
+			FileWriter myWriter = new FileWriter(database);
+			myWriter.write(data);
+			myWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

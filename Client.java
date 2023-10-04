@@ -61,10 +61,20 @@ public class Client extends User {
   public void addJobToQueue(Job j) {
     jobs.add(j);
   }
+
+  public String getQueuedJobs() {
+    String allJobs = "";
+    for(int i = 0; i < jobs.size(); i++) {
+      allJobs = allJobs.concat(String.valueOf(jobs.get(i)));
+    }
+    return allJobs;
+  }
   
   @Override
   public String toString() {
-    return "Client Information" + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Email: " + email + "\n License Plate: " + licensePlate + "\n Username: " + this.getUsername();
+    //return "Client Information" + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Email: " + email + "\n License Plate: " + licensePlate + "\n Username: " + this.getUsername();
+
+    return "Username: " + this.getUsername() + getQueuedJobs();
   }
   
 }
