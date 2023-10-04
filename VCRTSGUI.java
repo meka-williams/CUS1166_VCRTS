@@ -29,11 +29,13 @@ public class VCRTSGUI {
    private final String LOGIN_PAGE_NAME = "Login Page";
    private final String MAIN_PAGE_NAME = "Main Page";
    private final String CREATE_JOB_REQUEST_PAGE_NAME = "Create Job Request Page";
+   private final String CREATE_CAR_RENTAL_PAGE_NAME = "Create Job Request Page";
    private ArrayList<Button> pageSwitchButtons = new ArrayList<Button>();
    private ArrayList<String> screens = new ArrayList<String>();
    private PageSwitcher switcher = new PageSwitcher();
    private UserVerifier verifier = new UserVerifier();
    private JobRequestListener jobRequestListener = new JobRequestListener();
+   private CarRequestListener carRequestListener = new CarRequestListener() ;
    private User currentUser;
    private Database database = new Database();
    
@@ -59,6 +61,7 @@ public class VCRTSGUI {
       createMainPage();
       createJobRequestPage();
    }
+
 
    public void createIntroScreen() {
       JPanel welcomePanel = new JPanel();
@@ -283,7 +286,98 @@ public class VCRTSGUI {
       frame.add(jobRequestPanel, CREATE_JOB_REQUEST_PAGE_NAME);
       screens.add(CREATE_JOB_REQUEST_PAGE_NAME);
    }
+   
+ public void createCarRentalPage()//page for owners of vehicles to give their cars up for rent
+  {
+      JPanel carRentalPanel = new JPanel();
+      JLabel header = new JLabel("Fill in the following information to lend your car");
+      JPanel carRentalSubPanel = new JPanel();
+      JLabel carRentalLabel = new JLabel("car Title: ");
+      JTextField carTitle = new JTextField(20);
+      JPanel carDescriptionSubPanel = new JPanel();
+      JLabel carDescriptionLabel = new JLabel("Car Rental Description: ");
+      JTextArea carDescription = new JTextArea(10, 30);
+      JPanel approximateCarDurationSubPanel = new JPanel();
+      JLabel approximateCarDurationLabel = new JLabel("Car Rental Time: ");
+      JTextField approximatecarDuration = new JTextField(1);
+      String[] timeOptions = {"hours", "minutes"};
+      JComboBox<String> carDurationTimes = new JComboBox<String>(timeOptions);
+      JPanel carDeadlineSubPanel = new JPanel();
+      JLabel carDeadlineLabel = new JLabel("Car Rental Deadline (mm/dd/yyyy)");
+      JPanel dateSubPanel = new JPanel(new GridLayout(1, 5));
+      JTextField month = new JTextField(2);
+      JTextField day = new JTextField(2);
+      JTextField year = new JTextField(4);
+      JLabel divider = new JLabel("/");
+      JLabel divider2 = new JLabel("/");
+      JButton submit = new JButton("Submit Car Rental");
+      JButton back = new JButton("Back");
 
+      carTitle.setName("Car Title");
+      carTitle.addKeyListener(carRequestListener);
+
+      carRentalSubPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+      carRentalSubPanel.add(carRentalLabel);
+      carRentalSubPanel.add(carTitle);
+
+      carDescription.setName("Job Description");
+      carDescription.addKeyListener(carRequestListener);
+      
+      carDescriptionSubPanel.setLayout(new BorderLayout());
+      carDescriptionSubPanel.add(carDescriptionSubPanel, BorderLayout.NORTH);
+      carDescriptionSubPanel.add(carDescription, BorderLayout.SOUTH);
+
+      approximatecarDuration.setName("Job Duration Time");
+      approximatecarDuration.addKeyListener(carRequestListener);
+
+      carDurationTimes.addItemListener(carRequestListener);
+      
+      approximateCarDurationSubPanel.setLayout(new GridLayout(1, 3, 10, 0));
+      approximateCarDurationSubPanel.add(approximateCarDurationLabel);
+      approximateCarDurationSubPanel.add(approximatecarDuration);
+      approximateCarDurationSubPanel.add(carDurationTimes);
+
+      month.setName("Month");
+      month.addKeyListener(carRequestListener);
+      day.setName("Day");
+      day.addKeyListener(carRequestListener);
+      year.setName("Year");
+      year.addKeyListener(carRequestListener);
+      
+      divider.setHorizontalAlignment(JLabel.CENTER);
+      divider.setPreferredSize(new Dimension(1, 1));
+
+      divider2.setHorizontalAlignment(JLabel.CENTER);
+      divider2.setPreferredSize(new Dimension(1, 1));
+
+      dateSubPanel.add(month);
+      dateSubPanel.add(divider);
+      dateSubPanel.add(day);
+      dateSubPanel.add(divider2);
+      dateSubPanel.add(year);
+
+      submit.addActionListener(carRequestListener);
+
+      back.addActionListener(switcher);
+      pageSwitchButtons.add(new Button(MAIN_PAGE_NAME, back));
+
+      carDeadlineSubPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+      carDeadlineSubPanel.setSize(40, 40);
+      carDeadlineSubPanel.add(carDeadlineLabel);
+      carDeadlineSubPanel.add(dateSubPanel);
+
+      carRentalPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 30));
+      carRentalPanel.add(header);
+      carRentalPanel.add(carRentalSubPanel);
+      carRentalPanel.add(carDescriptionSubPanel);
+      carRentalPanel.add(approximateCarDurationSubPanel);
+      carRentalPanel.add(carDeadlineSubPanel);
+      carRentalPanel.add(submit);
+      carRentalPanel.add(back);
+      frame.add(carRentalPanel, CREATE_CAR_RENTAL_PAGE_NAME);
+      screens.add(CREATE_CAR_RENTAL_PAGE_NAME);
+   }
+   
    class Button {
       private JButton button;
       private String title;
@@ -399,6 +493,108 @@ public class VCRTSGUI {
       public void actionPerformed(ActionEvent e) {
          if(timeChoice.equals("hours"))
             this.setDurationTime(this.getDurationTime() * 60);
+
+         if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() >= 0 && 
+         !month.equals("") && !day.equals("") && !year.equals("")) {
+            System.out.println("Job submitted successfully");
+            this.setDeadline(month + "/" + day + "/" + year);
+
+            Client thisClient;
+            if(database.isUser(currentUser.getUsername())) {
+               thisClient = database.getClient(currentUser.getUsername());
+            }
+            else {
+               thisClient = new Client(currentUser.getUsername(), currentUser.getPassword());
+            }
+
+            Job newJob = new Job(this.getTitle(), this.getDescription(), this.getDurationTime(), this.getDeadline());
+            thisClient.addJobToQueue(newJob);
+            if(!database.isClient(thisClient)) {
+               database.addClient(thisClient);
+            }
+            for(Client c: database.getClients()) {
+               System.out.println(c);
+            }
+         }
+         else {
+            System.out.println("An error occurred. Please ensure you filled out all of the text boxes correctly.");
+         }
+      }
+
+      @Override
+      public void keyTyped(KeyEvent e) {
+      }
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+         switch(e.getSource().getClass().getSimpleName()) {
+            
+            case "JTextArea": {
+               this.setDescription(((JTextArea)e.getSource()).getText());
+               break;
+            }
+
+            case "JTextField": {
+               switch(((JTextField)e.getSource()).getName()) {
+                  
+                  case "Job Title": {
+                     this.setTitle(((JTextField)e.getSource()).getText());
+                     break;
+                  }
+                  case "Job Duration Time": {
+                     try {
+                        int time = Integer.parseInt(((JTextField)e.getSource()).getText());
+                        this.setDurationTime(time);
+                     } 
+                     catch(NumberFormatException n) {
+                        this.setDurationTime(-1);
+                     }
+                     break;
+                  }
+                  case "Month": {
+                     month = ((JTextField)e.getSource()).getText();
+                     break;
+                  }
+                  case "Day": {
+                     day = ((JTextField)e.getSource()).getText();
+                     break;
+                  }
+                  case "Year": {
+                     year = ((JTextField)e.getSource()).getText();
+                     break;
+                  }
+               }
+               break;
+            }
+         }
+      }
+
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+         timeChoice = (String)((JComboBox)e.getSource()).getSelectedItem();
+      }
+
+   }
+   class carRequestListener extends Owner implements KeyListener, ActionListener, ItemListener {
+      public carRequestListener(String firstName, String lastName, String email, Long phoneNumber, String vehicleInfo,
+            String licensePlate, int residencyTime, String username, String password) {
+         super(firstName, lastName, email, phoneNumber, vehicleInfo, licensePlate, residencyTime, username, password);
+         //TODO Auto-generated constructor stub
+      }
+
+      private String timeChoice = "hours";
+      private String month;
+      private String day;
+      private String year;
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         if(timeChoice.equals("hours"))
+            this.setresidencyTime(APP_HEIGHT);(this.getResidencyTime() * 60);
 
          if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() >= 0 && 
          !month.equals("") && !day.equals("") && !year.equals("")) {
