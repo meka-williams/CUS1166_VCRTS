@@ -29,7 +29,7 @@ public class VCRTSGUI {
    private final String LOGIN_PAGE_NAME = "Login Page";
    private final String MAIN_PAGE_NAME = "Main Page";
    private final String CREATE_JOB_REQUEST_PAGE_NAME = "Create Job Request Page";
-   private final String CREATE_CAR_RENTAL_PAGE_NAME = "Create Job Request Page";
+   private final String CREATE_CAR_RENTAL_PAGE_NAME = "Rent Car Page";
    private ArrayList<Button> pageSwitchButtons = new ArrayList<Button>();
    private ArrayList<String> screens = new ArrayList<String>();
    private PageSwitcher switcher = new PageSwitcher();
@@ -55,11 +55,11 @@ public class VCRTSGUI {
    }
 
    public void startApp() {
-      // createIntroScreen();
-      // createLoginScreen();
-      // createSignUpScreen();
-      // createMainPage();
-      // createJobRequestPage();
+      createIntroScreen();
+      createLoginScreen();
+      createSignUpScreen();
+      createMainPage();
+      createJobRequestPage();
       createCarRentalPage();
    }
 
@@ -293,7 +293,7 @@ public class VCRTSGUI {
       screens.add(CREATE_JOB_REQUEST_PAGE_NAME);
    }
    
- public void createCarRentalPage() { //page for owners of vehicles to give their cars up for rent
+   public void createCarRentalPage() { //page for owners of vehicles to give their cars up for rent
       JPanel carRentalPanel = new JPanel();
       JLabel header = new JLabel("Fill in the following information to lend your car");
       
@@ -377,6 +377,7 @@ public class VCRTSGUI {
             if(!username.equals("") && !password.equals("") && !database.isUser(username)) {
                currentUser = new User(username, password);
                database.addUser(currentUser);
+               database.updateDatabase("New Sign Up", currentUser);
                showMainPage();
             }
             else
@@ -385,6 +386,7 @@ public class VCRTSGUI {
          else if(((JButton)e.getSource()).getText().equals("Login")) {
             if(database.accountFound(username, password)) {
                currentUser = database.getUser(username);
+               database.updateDatabase("New Login", currentUser);
                showMainPage();
             }
             else {
@@ -448,9 +450,7 @@ public class VCRTSGUI {
             if(!database.isClient(thisClient)) {
                database.addClient(thisClient);
             }
-            for(Client c: database.getClients()) {
-               System.out.println(c);
-            }
+            database.updateDatabase("New Job Submitted", thisClient);
          }
          else {
             System.out.println("An error occurred. Please ensure you filled out all of the text boxes correctly.");
