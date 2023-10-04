@@ -314,13 +314,36 @@ public class VCRTSGUI {
       modelSubPanel.add(modelLable, BorderLayout.WEST);
       modelSubPanel.add(model, BorderLayout.EAST);
 
+      JPanel plateSubPanel = new JPanel();
+      JLabel plateLable = new JLabel("Enter Plate Number of Vehicle");
+      JTextField plate = new JTextField(20);
+
+      plateSubPanel.setLayout(new BorderLayout(5, 0));
+      plateSubPanel.add(plateLable, BorderLayout.WEST);
+      plateSubPanel.add(plate,BorderLayout.EAST);
+
+      JPanel durationSubPanel = new JPanel();
+      JLabel durationLable = new JLabel("Enter Duration of Vehicle Residency");
+      JTextField duration = new JTextField(20);
+
+      durationSubPanel.setLayout(new BorderLayout(5, 0));
+      durationSubPanel.add(durationLable, BorderLayout.WEST);
+      durationSubPanel.add(duration,BorderLayout.EAST);
+
       JButton submit = new JButton("Submit Job");
       submit.addActionListener(verifier);
+
+      JButton back = new JButton("Back");
+      back.addActionListener(switcher);
+      pageSwitchButtons.add(new Button(MAIN_PAGE_NAME, back));
 
       carRentalPanel.add(header);
       carRentalPanel.add(makeSubPanel);
       carRentalPanel.add(modelSubPanel);
+      carRentalPanel.add(plateSubPanel);
+      carRentalPanel.add(durationSubPanel);
       carRentalPanel.add(submit);
+      carRentalPanel.add(back);
       frame.add(carRentalPanel, CREATE_CAR_RENTAL_PAGE_NAME);
       screens.add(CREATE_CAR_RENTAL_PAGE_NAME);
 
