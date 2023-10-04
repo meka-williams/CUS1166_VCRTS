@@ -106,13 +106,13 @@ public class VCRTSGUI {
       usernameSubpanel.add(usernameLabel, BorderLayout.WEST);
       usernameSubpanel.add(username, BorderLayout.EAST);
 
-      username.addActionListener(verifier);
+      username.addKeyListener(verifier);
 
       passwordSubpanel.setLayout(new BorderLayout(5, 0));
       passwordSubpanel.add(passwordLabel, BorderLayout.WEST);
       passwordSubpanel.add(password, BorderLayout.EAST);
 
-      password.addActionListener(verifier);
+      password.addKeyListener(verifier);
 
       login.addActionListener(verifier);
 
@@ -175,21 +175,26 @@ public class VCRTSGUI {
       JLabel header2 = new JLabel("submit a job request as a client below.");
       JButton owner = new JButton("Rent Car As Owner");
       JButton client = new JButton("Request Job As Client");
+      JButton signout = new JButton("Sign Out");
 
       header2.setHorizontalAlignment(JLabel.CENTER);
 
       client.addActionListener(switcher);
       pageSwitchButtons.add(new Button(CREATE_JOB_REQUEST_PAGE_NAME, client));
 
+      signout.addActionListener(switcher);
+      pageSwitchButtons.add(new Button(INTRO_PAGE_NAME, signout));
+
       headerSubPanel.setLayout(new BorderLayout());
       headerSubPanel.add(header, BorderLayout.NORTH);
       headerSubPanel.add(header2, BorderLayout.SOUTH);
 
-      mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 100));
+      mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 75));
 
       mainPanel.add(headerSubPanel);
       mainPanel.add(owner);
       mainPanel.add(client);
+      mainPanel.add(signout);
       frame.add(mainPanel, MAIN_PAGE_NAME);
       screens.add(MAIN_PAGE_NAME);
    }
@@ -323,8 +328,8 @@ public class VCRTSGUI {
 
          for(int i = 0; i < screens.size(); i++) {
             if(requestedPage.equals(screens.get(i))) {
-               verifier.setUsername("");
-               verifier.setPassword("");
+               // verifier.setUsername("");
+               // verifier.setPassword("");
                ((CardLayout)frame.getContentPane().getLayout()).show(frame.getContentPane(), screens.get(i));
             }
          }
@@ -356,10 +361,20 @@ public class VCRTSGUI {
          if(((JButton)e.getSource()).getText().equals("Sign Up")) {
             if(!username.equals("") && !password.equals("") && !database.isUser(username)) {
                currentUser = new User(username, password);
+               database.addUser(currentUser);
                showMainPage();
             }
             else
                System.out.println("An error occurred, please try again.");
+         }
+         else if(((JButton)e.getSource()).getText().equals("Login")) {
+            if(database.accountFound(username, password)) {
+               currentUser = database.getUser(username);
+               showMainPage();
+            }
+            else {
+               System.out.println("Account not found. Please try again or create a new account.");
+            }
          }
       }
 
@@ -406,7 +421,7 @@ public class VCRTSGUI {
             this.setDeadline(month + "/" + day + "/" + year);
 
             Client thisClient;
-            if(database.isUser(currentUser.getUsername())) {
+            if(database.isClient(currentUser)) {
                thisClient = database.getClient(currentUser.getUsername());
             }
             else {
@@ -429,10 +444,12 @@ public class VCRTSGUI {
 
       @Override
       public void keyTyped(KeyEvent e) {
+         //Currently Unneeded
       }
 
       @Override
       public void keyPressed(KeyEvent e) {
+         //Currently Unneeded
       }
 
       @Override

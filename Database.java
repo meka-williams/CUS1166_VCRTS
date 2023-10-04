@@ -49,11 +49,13 @@ public class Database {
 
 	private File database = new File("Database.txt");
 	private String data;
+	private ArrayList<User> users;
 	private ArrayList<Client> clients;
 	private ArrayList<Owner> owners;
 
 	public Database() {
 		data = "";
+		users = new ArrayList<User>();
 		clients = new ArrayList<Client>();
 		owners = new ArrayList<Owner>();
 	}
@@ -66,9 +68,9 @@ public class Database {
 		return false;
 	}
 
-	public boolean isClient(Client thisClient) {
+	public boolean isClient(User thisUser) {
 		for(Client c: clients) {
-			if(c.equals(thisClient))
+			if(c.equals(thisUser))
 				return true;
 		}
 
@@ -103,7 +105,42 @@ public class Database {
 		return false;
 	}
 
+	public Owner getOwner(String username) {
+		for(Owner o: owners) {
+			if(o.getUsername().equals(username))
+				return o;
+		}
+		return null;
+	}
+
 	public boolean isUser(String username) {
 		return isClient(username) || isOwner(username);
+	}
+
+	public User getUser(String username) {
+		User thisUser = getClient(username);
+		if(thisUser == null) {
+			thisUser = getOwner(username);
+		}
+		return thisUser;
+	}
+
+	public void addUser(User thisUser) {
+		users.add(thisUser);
+	}
+
+	public void printUsers() {
+		for(User u: users) {
+			System.out.println(u);
+		}
+	}
+
+	public boolean accountFound(String username, String password) {
+		for(User u: users) {
+			if(u.getUsername().equals(username) && u.getPassword().equals(password))
+				return true;
+		}
+
+		return false;
 	}
 }
