@@ -298,48 +298,47 @@ public class VCRTSGUI {
    
    public void createCarRentalPage() { //page for owners of vehicles to give their cars up for rent
       JPanel carRentalPanel = new JPanel();
-
       JLabel header = new JLabel("Fill in the following information to lend your car");
-
       JPanel makeSubPanel = new JPanel();
-      JLabel makeLable = new JLabel("Enter Make of Vehicle");
+      JLabel makeLabel = new JLabel("Enter Make of Vehicle");
       JTextField make = new JTextField(20);
+      JPanel modelSubPanel = new JPanel();
+      JLabel modelLabel = new JLabel("Enter Model of Vehicle");
+      JTextField model = new JTextField(20);
+      JPanel plateSubPanel = new JPanel();
+      JLabel plateLabel = new JLabel("Enter Plate Number of Vehicle");
+      JTextField plate = new JTextField(20);
+      JPanel durationSubPanel = new JPanel();
+      JLabel durationLabel = new JLabel("Enter Duration of Vehicle Residency");
+      JTextField duration = new JTextField(10);
+      String[] timeOptions = {"days", "months"};
+      JComboBox<String> rentDurationTimes = new JComboBox<String>(timeOptions);
+      JButton submit = new JButton("Submit Job");
+      JButton back = new JButton("Back");
 
       makeSubPanel.setLayout(new BorderLayout(5,0));
-      makeSubPanel.add(makeLable, BorderLayout.WEST);
+      makeSubPanel.add(makeLabel, BorderLayout.WEST);
       makeSubPanel.add(make, BorderLayout.EAST);
 
-      JPanel modelSubPanel = new JPanel();
-      JLabel modelLable = new JLabel("Enter Model of Vehicle");
-      JTextField model = new JTextField(20);
-
       modelSubPanel.setLayout(new BorderLayout(5,0));
-      modelSubPanel.add(modelLable, BorderLayout.WEST);
+      modelSubPanel.add(modelLabel, BorderLayout.WEST);
       modelSubPanel.add(model, BorderLayout.EAST);
 
-      JPanel plateSubPanel = new JPanel();
-      JLabel plateLable = new JLabel("Enter Plate Number of Vehicle");
-      JTextField plate = new JTextField(20);
-
       plateSubPanel.setLayout(new BorderLayout(5, 0));
-      plateSubPanel.add(plateLable, BorderLayout.WEST);
+      plateSubPanel.add(plateLabel, BorderLayout.WEST);
       plateSubPanel.add(plate,BorderLayout.EAST);
 
-      JPanel durationSubPanel = new JPanel();
-      JLabel durationLable = new JLabel("Enter Duration of Vehicle Residency");
-      JTextField duration = new JTextField(20);
-
       durationSubPanel.setLayout(new BorderLayout(5, 0));
-      durationSubPanel.add(durationLable, BorderLayout.WEST);
-      durationSubPanel.add(duration,BorderLayout.EAST);
-
-      JButton submit = new JButton("Submit Job");
+      durationSubPanel.add(durationLabel, BorderLayout.WEST);
+      durationSubPanel.add(rentDurationTimes, BorderLayout.EAST);
+      durationSubPanel.add(duration,BorderLayout.CENTER);
+      
       submit.addActionListener(verifier);
 
-      JButton back = new JButton("Back");
       back.addActionListener(switcher);
       pageSwitchButtons.add(new Button(MAIN_PAGE_NAME, back));
 
+      carRentalPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
       carRentalPanel.add(header);
       carRentalPanel.add(makeSubPanel);
       carRentalPanel.add(modelSubPanel);
@@ -349,8 +348,6 @@ public class VCRTSGUI {
       carRentalPanel.add(back);
       frame.add(carRentalPanel, CREATE_CAR_RENTAL_PAGE_NAME);
       screens.add(CREATE_CAR_RENTAL_PAGE_NAME);
-
-      carRentalPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
    }
    
    class Button {
