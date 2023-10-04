@@ -189,6 +189,9 @@ public class VCRTSGUI {
       signout.addActionListener(switcher);
       pageSwitchButtons.add(new Button(INTRO_PAGE_NAME, signout));
 
+      owner.addActionListener(switcher);
+      pageSwitchButtons.add(new Button(CREATE_CAR_RENTAL_PAGE_NAME, owner));
+
       headerSubPanel.setLayout(new BorderLayout());
       headerSubPanel.add(header, BorderLayout.NORTH);
       headerSubPanel.add(header2, BorderLayout.SOUTH);
