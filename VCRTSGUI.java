@@ -295,13 +295,36 @@ public class VCRTSGUI {
    
    public void createCarRentalPage() { //page for owners of vehicles to give their cars up for rent
       JPanel carRentalPanel = new JPanel();
-      JLabel header = new JLabel("Fill in the following information to lend your car");
-      
 
-      
+      JLabel header = new JLabel("Fill in the following information to lend your car");
+
+      JPanel makeSubPanel = new JPanel();
+      JLabel makeLable = new JLabel("Enter Make of Vehicle");
+      JTextField make = new JTextField(20);
+
+      makeSubPanel.setLayout(new BorderLayout(5,0));
+      makeSubPanel.add(makeLable, BorderLayout.WEST);
+      makeSubPanel.add(make, BorderLayout.EAST);
+
+      JPanel modelSubPanel = new JPanel();
+      JLabel modelLable = new JLabel("Enter Model of Vehicle");
+      JTextField model = new JTextField(20);
+
+      modelSubPanel.setLayout(new BorderLayout(5,0));
+      modelSubPanel.add(modelLable, BorderLayout.WEST);
+      modelSubPanel.add(model, BorderLayout.EAST);
+
+      JButton submit = new JButton("Submit Job");
+      submit.addActionListener(verifier);
+
       carRentalPanel.add(header);
+      carRentalPanel.add(makeSubPanel);
+      carRentalPanel.add(modelSubPanel);
+      carRentalPanel.add(submit);
       frame.add(carRentalPanel, CREATE_CAR_RENTAL_PAGE_NAME);
       screens.add(CREATE_CAR_RENTAL_PAGE_NAME);
+
+      carRentalPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
    }
    
    class Button {
