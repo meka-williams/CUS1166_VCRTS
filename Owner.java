@@ -2,13 +2,13 @@ public class Owner extends User {
     private String firstName;
     private String lastname;
     private String email;
-    private String phoneNumber;
+    private double phoneNumber;
     private String vehicleInfo;
     private String licensePlate;
-    private String residencyTime;
+    private int residencyTime;
 
-    public Owner(String firstName, String lastName, String email, String phoneNumber, String vehicleInfo, 
-    String licensePlate, String residencyTime, String username, String password) {
+    public Owner(String firstName, String lastName, String email, Long phoneNumber, String vehicleInfo, 
+    String licensePlate, int residencyTime, String username, String password) {
         super(username, password);
         this.firstName = firstName;
         this.lastname = lastName;
@@ -43,11 +43,11 @@ public class Owner extends User {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
+    public double getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(double phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -67,11 +67,11 @@ public class Owner extends User {
         this.licensePlate = licensePlate;
     }
 
-    public String getResidencyTime() {
+    public int getResidencyTime() {
         return residencyTime;
     }
 
-    public void setResidencyTime(String residencyTime) {
+    public void setResidencyTime(int residencyTime) {
         this.residencyTime = residencyTime;
     }
 
