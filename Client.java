@@ -63,9 +63,8 @@ public class Client extends User {
   }
   
   @Override
-  /* 
   public String toString() {
     return "Client Information" + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Email: " + email + "\n License Plate: " + licensePlate + "\n Username: " + this.getUsername();
   }
-  */
+  
 }

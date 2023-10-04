@@ -19,6 +19,10 @@ public class Owner extends User {
         this.residencyTime = residencyTime;
     }
 
+    public Owner(String username, String password) {
+        super(username, password);
+    }
+
     public String getFirstName() {
         return firstName;
     }
