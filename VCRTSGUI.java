@@ -35,7 +35,7 @@ public class VCRTSGUI {
    private PageSwitcher switcher = new PageSwitcher();
    private UserVerifier verifier = new UserVerifier();
    private JobRequestListener jobRequestListener = new JobRequestListener();
-   private CarRentalRequestListener rentalRequestListener = new CarRentalRequestListener() ;
+   private CarRentalRequestListener rentalRequestListener = new CarRentalRequestListener();
    private User currentUser;
    private Database database = new Database();
    
@@ -339,6 +339,8 @@ public class VCRTSGUI {
 
       duration.setName("Residency Duration");
       duration.addKeyListener(rentalRequestListener);
+
+      rentDurationTimes.addItemListener(rentalRequestListener);
       
       durationSubPanel.setLayout(new BorderLayout(5, 0));
       durationSubPanel.add(durationLabel, BorderLayout.WEST);
@@ -504,7 +506,6 @@ public class VCRTSGUI {
          if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() > 0 && 
          !month.equals("") && !day.equals("") && !year.equals("")) {
             System.out.println("Job submitted successfully");
-            clearFields();
             this.setDeadline(month + "/" + day + "/" + year);
 
             Client thisClient;
@@ -523,6 +524,7 @@ public class VCRTSGUI {
             }
 
             database.updateDatabase("New Job Submitted", thisClient);
+            clearFields();
          }
          else {
             System.out.println("An error occurred. Please ensure you filled out all of the text boxes correctly.");
@@ -602,6 +604,11 @@ public class VCRTSGUI {
          monthBox.setText("");
          dayBox.setText("");
          yearBox.setText("");
+
+         this.setTitle("");
+         this.setDescription("");
+         this.setDurationTime(0);
+         this.setDeadline("");
       }
    }
 
@@ -615,6 +622,7 @@ public class VCRTSGUI {
 
       @Override
       public void actionPerformed(ActionEvent e) {
+         System.out.println("Months Selected: " + monthsSelected);
          if(monthsSelected) {
             this.setResidency(this.getResidency() * 30);
          }
@@ -622,7 +630,6 @@ public class VCRTSGUI {
          if(!this.getMake().equals("") && !this.getModel().equals("") && 
          !this.getLicensePlateNumber().equals("") && this.getResidency() > 0) {
             System.out.println("Car Rented Successfully");
-            clearFields();
 
             Owner thisOwner;
 
@@ -641,6 +648,7 @@ public class VCRTSGUI {
             }
 
             database.updateDatabase("New Rental Added", thisOwner);
+            clearFields();
          }
          else {
             System.out.println("An error occurred. Please try again. Be sure to fill out all fields correctly.");
@@ -702,6 +710,11 @@ public class VCRTSGUI {
          modelBox.setText("");
          plateNumberBox.setText("");
          residencyBox.setText("");
+
+         this.setMake("");
+         this.setModel("");
+         this.setLicensePlateNumber("");
+         this.setResidency(0);
       }
    }
 }
