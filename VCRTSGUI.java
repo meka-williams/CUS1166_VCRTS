@@ -496,7 +496,7 @@ public class VCRTSGUI {
             this.setDeadline(month + "/" + day + "/" + year);
 
             Client thisClient;
-            if(database.isClient(currentUser)) {
+            if(database.isClient(currentUser.getUsername())) {
                thisClient = database.getClient(currentUser.getUsername());
             }
             else {
@@ -505,9 +505,11 @@ public class VCRTSGUI {
 
             Job newJob = new Job(this.getTitle(), this.getDescription(), this.getDurationTime(), this.getDeadline());
             thisClient.addJobToQueue(newJob);
-            if(!database.isClient(thisClient)) {
+
+            if(!database.isClient(thisClient.getUsername())) {
                database.addClient(thisClient);
             }
+            
             database.updateDatabase("New Job Submitted", thisClient);
          }
          else {
@@ -587,6 +589,24 @@ public class VCRTSGUI {
          if(!this.getMake().equals("") && !this.getModel().equals("") && 
          !this.getLicensePlateNumber().equals("") && this.getResidency() > 0) {
             System.out.println("Car Rented Successfully");
+
+            Owner thisOwner;
+
+            if(database.isOwner(currentUser.getUsername())) {
+               thisOwner = database.getOwner(currentUser.getUsername());
+            }
+            else {
+               thisOwner = new Owner(currentUser.getUsername(), currentUser.getPassword());
+            }
+
+            Car newRental = new Car(this.getMake(), this.getModel(), this.getLicensePlateNumber(), this.getResidency());
+            thisOwner.addRental(newRental);
+
+            if(!database.isOwner(thisOwner.getUsername())) {
+               database.addOwner(thisOwner);
+            }
+
+            database.updateDatabase("New Rental Added", thisOwner);
          }
          else {
             System.out.println("An error occurred. Please try again. Be sure to fill out all fields correctly.");
@@ -595,10 +615,12 @@ public class VCRTSGUI {
 
       @Override
       public void keyTyped(KeyEvent e) {
+         //Currently Unneeded
       }
 
       @Override
       public void keyPressed(KeyEvent e) {
+         //Currently Unneeded
       }
 
       @Override

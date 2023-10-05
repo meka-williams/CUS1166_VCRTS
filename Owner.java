@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Owner extends User {
     private String firstName;
     private String lastname;
@@ -6,6 +8,7 @@ public class Owner extends User {
     private String vehicleInfo;
     private String licensePlate;
     private int residencyTime;
+    private ArrayList<Car> rentals;
 
     public Owner(String firstName, String lastName, String email, Long phoneNumber, String vehicleInfo, 
     String licensePlate, int residencyTime, String username, String password) {
@@ -17,10 +20,12 @@ public class Owner extends User {
         this.vehicleInfo = vehicleInfo;
         this.licensePlate = licensePlate;
         this.residencyTime = residencyTime;
+        rentals = new ArrayList<Car>();
     }
 
     public Owner(String username, String password) {
         super(username, password);
+        rentals = new ArrayList<Car>();
     }
 
     public String getFirstName() {
@@ -79,16 +84,32 @@ public class Owner extends User {
         this.residencyTime = residencyTime;
     }
 
+    public void addRental(Car aCar) {
+        rentals.add(aCar);
+    }
+
+    public String getRentals() {
+        String carRentals = "";
+        
+        for(Car c: rentals) {
+            carRentals = carRentals.concat(String.valueOf(c));
+        }
+
+        return carRentals;
+    }
+
     @Override
     public String toString() {
-        return "Owner Information{" +
-                "\n First Name: " + firstName +
-                "\n Last Name: " + lastname +
-                "\n Email: " + email +
-                "\n Phone Number: " + phoneNumber +
-                "\n Vehicle Info: " + vehicleInfo +
-                "\n License Plate: " + licensePlate +
-                "\n Residency Time: " + residencyTime + " hours" +
-                "\n}";
+        // return "Owner Information{" +
+        //         "\n First Name: " + firstName +
+        //         "\n Last Name: " + lastname +
+        //         "\n Email: " + email +
+        //         "\n Phone Number: " + phoneNumber +
+        //         "\n Vehicle Info: " + vehicleInfo +
+        //         "\n License Plate: " + licensePlate +
+        //         "\n Residency Time: " + residencyTime + " hours" +
+        //         "\n}";
+
+        return "Username: " + this.getUsername() + getRentals();
     }
 }

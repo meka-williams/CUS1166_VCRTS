@@ -71,15 +71,6 @@ public class Database {
 		return false;
 	}
 
-	public boolean isClient(User thisUser) {
-		for(Client c: clients) {
-			if(c.equals(thisUser))
-				return true;
-		}
-
-		return false;
-	}
-
 	public Client getClient(String username) {
 		for(Client c: clients) {
 			if(c.getUsername().equals(username))
@@ -116,8 +107,16 @@ public class Database {
 		return null;
 	}
 
+	public void addOwner(Owner o) {
+		owners.add(o);
+	}
+
 	public boolean isUser(String username) {
-		return isClient(username) || isOwner(username);
+		for(User u: users) {
+			if(u.getUsername().equals(username))
+				return true;
+		}
+		return false;
 	}
 
 	public User getUser(String username) {

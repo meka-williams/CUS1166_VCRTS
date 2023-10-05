@@ -48,4 +48,11 @@ public class Car {
     public void setResidency(int residency) {
         this.residency = residency;
     }
+
+    @Override
+    public String toString() {
+        return "|Make: " + make + "|Model: " + model + "|License Plate Number: " + licensePlateNumber + "|Residency Time: " + 
+        residency + " days";
+    }
+    
 }
