@@ -388,6 +388,10 @@ public class VCRTSGUI {
       }
    }
 
+   interface FieldClearer {
+      public void clearFields();
+   }
+
    class PageSwitcher implements ActionListener {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -479,11 +483,18 @@ public class VCRTSGUI {
 
    }
 
-   class JobRequestListener extends Job implements KeyListener, ActionListener, ItemListener {
+   class JobRequestListener extends Job implements KeyListener, ActionListener, ItemListener, FieldClearer {
       private String timeChoice = "hours";
       private String month;
       private String day;
       private String year;
+
+      private JTextField titleBox;
+      private JTextArea descriptionBox;
+      private JTextField durationTimeBox;
+      private JTextField monthBox;
+      private JTextField dayBox;
+      private JTextField yearBox;
 
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -493,6 +504,7 @@ public class VCRTSGUI {
          if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() > 0 && 
          !month.equals("") && !day.equals("") && !year.equals("")) {
             System.out.println("Job submitted successfully");
+            clearFields();
             this.setDeadline(month + "/" + day + "/" + year);
 
             Client thisClient;
@@ -509,7 +521,7 @@ public class VCRTSGUI {
             if(!database.isClient(thisClient.getUsername())) {
                database.addClient(thisClient);
             }
-            
+
             database.updateDatabase("New Job Submitted", thisClient);
          }
          else {
@@ -532,6 +544,7 @@ public class VCRTSGUI {
          switch(e.getSource().getClass().getSimpleName()) {
             
             case "JTextArea": {
+               descriptionBox = (JTextArea)e.getSource();
                this.setDescription(((JTextArea)e.getSource()).getText());
                break;
             }
@@ -540,10 +553,12 @@ public class VCRTSGUI {
                switch(((JTextField)e.getSource()).getName()) {
                   
                   case "Job Title": {
+                     titleBox = (JTextField)e.getSource();
                      this.setTitle(((JTextField)e.getSource()).getText());
                      break;
                   }
                   case "Job Duration Time": {
+                     durationTimeBox = (JTextField)e.getSource();
                      try {
                         int time = Integer.parseInt(((JTextField)e.getSource()).getText());
                         this.setDurationTime(time);
@@ -554,14 +569,17 @@ public class VCRTSGUI {
                      break;
                   }
                   case "Month": {
+                     monthBox = (JTextField)e.getSource();
                      month = ((JTextField)e.getSource()).getText();
                      break;
                   }
                   case "Day": {
+                     dayBox = (JTextField)e.getSource();
                      day = ((JTextField)e.getSource()).getText();
                      break;
                   }
                   case "Year": {
+                     yearBox = (JTextField)e.getSource();
                      year = ((JTextField)e.getSource()).getText();
                      break;
                   }
@@ -576,9 +594,24 @@ public class VCRTSGUI {
          timeChoice = (String)((JComboBox)e.getSource()).getSelectedItem();
       }
 
+      @Override
+      public void clearFields() {
+         titleBox.setText("");
+         descriptionBox.setText("");
+         durationTimeBox.setText("");
+         monthBox.setText("");
+         dayBox.setText("");
+         yearBox.setText("");
+      }
    }
-   class CarRentalRequestListener extends Car implements KeyListener, ActionListener, ItemListener {
+
+   class CarRentalRequestListener extends Car implements KeyListener, ActionListener, ItemListener, FieldClearer {
       private boolean monthsSelected = false;
+
+      private JTextField makeBox;
+      private JTextField modelBox;
+      private JTextField plateNumberBox;
+      private JTextField residencyBox;
 
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -589,6 +622,7 @@ public class VCRTSGUI {
          if(!this.getMake().equals("") && !this.getModel().equals("") && 
          !this.getLicensePlateNumber().equals("") && this.getResidency() > 0) {
             System.out.println("Car Rented Successfully");
+            clearFields();
 
             Owner thisOwner;
 
@@ -628,18 +662,22 @@ public class VCRTSGUI {
          if(e.getSource().getClass().getSimpleName().equals("JTextField")) {
             switch(((JTextField)e.getSource()).getName()) {
                case "Car Make": {
+                  makeBox = (JTextField)e.getSource();
                   this.setMake(((JTextField)e.getSource()).getText());
                   break;
                }
                case "Car Model": {
+                  modelBox = (JTextField)e.getSource();
                   this.setModel(((JTextField)e.getSource()).getText());
                   break;
                }
                case "Car Plate Number": {
+                  plateNumberBox = (JTextField)e.getSource();
                   this.setLicensePlateNumber(((JTextField)e.getSource()).getText());
                   break;
                }
                case "Residency Duration": {
+                  residencyBox = (JTextField)e.getSource();
                   try {
                      int residencyTime = Integer.parseInt(((JTextField)e.getSource()).getText());
                      this.setResidency(residencyTime);
@@ -658,5 +696,12 @@ public class VCRTSGUI {
          monthsSelected = ((String)((JComboBox)e.getSource()).getSelectedItem()).equals("months");
       }
 
+      @Override
+      public void clearFields() {
+         makeBox.setText("");
+         modelBox.setText("");
+         plateNumberBox.setText("");
+         residencyBox.setText("");
+      }
    }
 }
