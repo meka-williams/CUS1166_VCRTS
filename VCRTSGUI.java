@@ -35,7 +35,7 @@ public class VCRTSGUI {
    private PageSwitcher switcher = new PageSwitcher();
    private UserVerifier verifier = new UserVerifier();
    private JobRequestListener jobRequestListener = new JobRequestListener();
-   private CarRentalRequestListener carRequestListener = new CarRentalRequestListener() ;
+   private CarRentalRequestListener rentalRequestListener = new CarRentalRequestListener() ;
    private User currentUser;
    private Database database = new Database();
    
@@ -313,27 +313,39 @@ public class VCRTSGUI {
       JTextField duration = new JTextField(10);
       String[] timeOptions = {"days", "months"};
       JComboBox<String> rentDurationTimes = new JComboBox<String>(timeOptions);
-      JButton submit = new JButton("Submit Job");
+      JButton rentCar = new JButton("Rent Car");
       JButton back = new JButton("Back");
 
+      make.setName("Car Make");
+      make.addKeyListener(rentalRequestListener);
+      
       makeSubPanel.setLayout(new BorderLayout(5,0));
       makeSubPanel.add(makeLabel, BorderLayout.WEST);
       makeSubPanel.add(make, BorderLayout.EAST);
 
+      model.setName("Car Model");
+      model.addKeyListener(rentalRequestListener);
+      
       modelSubPanel.setLayout(new BorderLayout(5,0));
       modelSubPanel.add(modelLabel, BorderLayout.WEST);
       modelSubPanel.add(model, BorderLayout.EAST);
 
+      plate.setName("Car Plate Number");
+      plate.addKeyListener(rentalRequestListener);
+      
       plateSubPanel.setLayout(new BorderLayout(5, 0));
       plateSubPanel.add(plateLabel, BorderLayout.WEST);
       plateSubPanel.add(plate,BorderLayout.EAST);
 
+      duration.setName("Residency Duration");
+      duration.addKeyListener(rentalRequestListener);
+      
       durationSubPanel.setLayout(new BorderLayout(5, 0));
       durationSubPanel.add(durationLabel, BorderLayout.WEST);
       durationSubPanel.add(rentDurationTimes, BorderLayout.EAST);
       durationSubPanel.add(duration,BorderLayout.CENTER);
       
-      submit.addActionListener(verifier);
+      rentCar.addActionListener(rentalRequestListener);
 
       back.addActionListener(switcher);
       pageSwitchButtons.add(new Button(MAIN_PAGE_NAME, back));
@@ -344,7 +356,7 @@ public class VCRTSGUI {
       carRentalPanel.add(modelSubPanel);
       carRentalPanel.add(plateSubPanel);
       carRentalPanel.add(durationSubPanel);
-      carRentalPanel.add(submit);
+      carRentalPanel.add(rentCar);
       carRentalPanel.add(back);
       frame.add(carRentalPanel, CREATE_CAR_RENTAL_PAGE_NAME);
       screens.add(CREATE_CAR_RENTAL_PAGE_NAME);
@@ -478,7 +490,7 @@ public class VCRTSGUI {
          if(timeChoice.equals("hours"))
             this.setDurationTime(this.getDurationTime() * 60);
 
-         if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() >= 0 && 
+         if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() > 0 && 
          !month.equals("") && !day.equals("") && !year.equals("")) {
             System.out.println("Job submitted successfully");
             this.setDeadline(month + "/" + day + "/" + year);
@@ -564,9 +576,21 @@ public class VCRTSGUI {
 
    }
    class CarRentalRequestListener extends Car implements KeyListener, ActionListener, ItemListener {
+      private boolean monthsSelected = false;
 
       @Override
       public void actionPerformed(ActionEvent e) {
+         if(monthsSelected) {
+            this.setResidency(this.getResidency() * 30);
+         }
+
+         if(!this.getMake().equals("") && !this.getModel().equals("") && 
+         !this.getLicensePlateNumber().equals("") && this.getResidency() > 0) {
+            System.out.println("Car Rented Successfully");
+         }
+         else {
+            System.out.println("An error occurred. Please try again. Be sure to fill out all fields correctly.");
+         }
       }
 
       @Override
@@ -579,10 +603,37 @@ public class VCRTSGUI {
 
       @Override
       public void keyReleased(KeyEvent e) {
+         if(e.getSource().getClass().getSimpleName().equals("JTextField")) {
+            switch(((JTextField)e.getSource()).getName()) {
+               case "Car Make": {
+                  this.setMake(((JTextField)e.getSource()).getText());
+                  break;
+               }
+               case "Car Model": {
+                  this.setModel(((JTextField)e.getSource()).getText());
+                  break;
+               }
+               case "Car Plate Number": {
+                  this.setLicensePlateNumber(((JTextField)e.getSource()).getText());
+                  break;
+               }
+               case "Residency Duration": {
+                  try {
+                     int residencyTime = Integer.parseInt(((JTextField)e.getSource()).getText());
+                     this.setResidency(residencyTime);
+                  }
+                  catch(NumberFormatException n) {
+                     this.setResidency(-1);
+                  }
+                  break;
+               }
+            }
+         }
       }
 
       @Override
       public void itemStateChanged(ItemEvent e) {
+         monthsSelected = ((String)((JComboBox)e.getSource()).getSelectedItem()).equals("months");
       }
 
    }
