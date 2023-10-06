@@ -52,6 +52,7 @@ public class VCRTSGUI {
       frame.setTitle("Vehicular Cloud Real Time System");
       frame.setSize(APP_WIDTH, APP_HEIGHT);
       frame.setResizable(false);
+      frame.setLocation(500, 100);
 
       infoBoxMessage.setHorizontalAlignment(JLabel.CENTER);
       
@@ -560,9 +561,7 @@ public class VCRTSGUI {
 
          if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() > 0 && 
          !month.equals("") && !day.equals("") && !year.equals("")) {
-            System.out.println("Job submitted successfully");
-            infoBoxMessage.setText("Job submitted successfully!");
-            infoBox.setVisible(true);
+            
             this.setDeadline(month + "/" + day + "/" + year);
 
             Client thisClient;
@@ -582,6 +581,9 @@ public class VCRTSGUI {
 
             database.updateDatabase("New Job Submitted", thisClient);
             clearFields();
+            System.out.println("Job submitted successfully");
+            infoBoxMessage.setText("Job submitted successfully!");
+            infoBox.setVisible(true);
          }
          else {
             System.out.println("An error occurred. Please ensure you filled out all of the text boxes correctly.");
@@ -695,9 +697,6 @@ public class VCRTSGUI {
 
          if(!this.getMake().equals("") && !this.getModel().equals("") && 
          !this.getLicensePlateNumber().equals("") && this.getResidency() > 0) {
-            System.out.println("Car Rented Successfully");
-            infoBoxMessage.setText("Car rented successfully!");
-            infoBox.setVisible(true);
 
             Owner thisOwner;
 
@@ -717,6 +716,9 @@ public class VCRTSGUI {
 
             database.updateDatabase("New Rental Added", thisOwner);
             clearFields();
+            System.out.println("Car Rented Successfully");
+            infoBoxMessage.setText("Car rented successfully!");
+            infoBox.setVisible(true);
          }
          else {
             System.out.println("An error occurred. Please try again. Be sure to fill out all fields correctly.");
