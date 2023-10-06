@@ -52,7 +52,7 @@ public class VCRTSGUI {
       frame.setTitle("Vehicular Cloud Real Time System");
       frame.setSize(APP_WIDTH, APP_HEIGHT);
       frame.setResizable(false);
-      frame.setLocation(500, 100);
+      frame.setLocation(600, 100);
 
       infoBoxMessage.setHorizontalAlignment(JLabel.CENTER);
       
@@ -60,7 +60,7 @@ public class VCRTSGUI {
       infoBox.setLayout(new BorderLayout());
       infoBox.setSize(300, 200);
       infoBox.setResizable(false);
-      infoBox.setLocation(700, 350);
+      infoBox.setLocationRelativeTo(frame);
       infoBox.setModalityType(ModalityType.APPLICATION_MODAL);
       infoBox.add(infoBoxMessage, BorderLayout.CENTER);
 
