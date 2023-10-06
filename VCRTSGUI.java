@@ -30,7 +30,10 @@ public class VCRTSGUI {
    private final String MAIN_PAGE_NAME = "Main Page";
    private final String CREATE_JOB_REQUEST_PAGE_NAME = "Create Job Request Page";
    private final String CREATE_CAR_RENTAL_PAGE_NAME = "Rent Car Page";
-   private ArrayList<Button> pageSwitchButtons = new ArrayList<Button>();
+   private JLabel currentUserId = new JLabel("");
+   private JLabel currentClientId = new JLabel("");
+   private JLabel currentOwnerId = new JLabel("");
+   private ArrayList<JButton> pageSwitchButtons = new ArrayList<JButton>();
    private ArrayList<String> screens = new ArrayList<String>();
    private PageSwitcher switcher = new PageSwitcher();
    private UserVerifier verifier = new UserVerifier();
@@ -77,11 +80,13 @@ public class VCRTSGUI {
       explanation.setWrapStyleWord(true);
       explanation.setSize(APP_WIDTH - 50, APP_HEIGHT - 50);
 
+      login.setName(LOGIN_PAGE_NAME);
       login.addActionListener(switcher);
-      pageSwitchButtons.add(new Button(LOGIN_PAGE_NAME, login));
+      pageSwitchButtons.add(login);
 
+      signUp.setName(SIGNUP_PAGE_NAME);
       signUp.addActionListener(switcher);
-      pageSwitchButtons.add(new Button(SIGNUP_PAGE_NAME, signUp));
+      pageSwitchButtons.add(signUp);
 
       welcomePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
       welcomePanel.setBounds(0, 0, APP_WIDTH, APP_HEIGHT);
@@ -120,8 +125,9 @@ public class VCRTSGUI {
 
       login.addActionListener(verifier);
 
+      back.setName(INTRO_PAGE_NAME);
       back.addActionListener(switcher); //back button
-      pageSwitchButtons.add(new Button(INTRO_PAGE_NAME, back));
+      pageSwitchButtons.add(back);
 
       loginPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 
@@ -158,8 +164,9 @@ public class VCRTSGUI {
       
       signup.addActionListener(verifier);
  
+      back.setName(INTRO_PAGE_NAME);
       back.addActionListener(switcher);
-      pageSwitchButtons.add(new Button(INTRO_PAGE_NAME, back));
+      pageSwitchButtons.add(back);
       
       signUpPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
 
@@ -174,6 +181,8 @@ public class VCRTSGUI {
 
    public void createMainPage() {
       JPanel mainPanel = new JPanel();
+      JPanel idPanel = new JPanel();
+      JPanel mainPageContentPanel = new JPanel();
       JPanel headerSubPanel = new JPanel();
       JLabel header = new JLabel("Select whether you would like to rent out your car as an owner or");
       JLabel header2 = new JLabel("submit a job request as a client below.");
@@ -183,30 +192,41 @@ public class VCRTSGUI {
 
       header2.setHorizontalAlignment(JLabel.CENTER);
 
+      client.setName(CREATE_JOB_REQUEST_PAGE_NAME);
       client.addActionListener(switcher);
-      pageSwitchButtons.add(new Button(CREATE_JOB_REQUEST_PAGE_NAME, client));
+      pageSwitchButtons.add(client);
 
+      signout.setName(INTRO_PAGE_NAME);
       signout.addActionListener(switcher);
-      pageSwitchButtons.add(new Button(INTRO_PAGE_NAME, signout));
+      pageSwitchButtons.add(signout);
 
+      owner.setName(CREATE_CAR_RENTAL_PAGE_NAME);
       owner.addActionListener(switcher);
-      pageSwitchButtons.add(new Button(CREATE_CAR_RENTAL_PAGE_NAME, owner));
+      pageSwitchButtons.add(owner);
+
+      idPanel.setLayout(new BorderLayout());
+      idPanel.add(currentUserId, BorderLayout.WEST);
 
       headerSubPanel.setLayout(new BorderLayout());
       headerSubPanel.add(header, BorderLayout.NORTH);
       headerSubPanel.add(header2, BorderLayout.SOUTH);
 
-      mainPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 75));
+      mainPageContentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 75));
+      mainPageContentPanel.add(headerSubPanel);
+      mainPageContentPanel.add(owner);
+      mainPageContentPanel.add(client);
+      mainPageContentPanel.add(signout);
 
-      mainPanel.add(headerSubPanel);
-      mainPanel.add(owner);
-      mainPanel.add(client);
-      mainPanel.add(signout);
+      mainPanel.setLayout(new BorderLayout());
+      mainPanel.add(idPanel, BorderLayout.NORTH);
+      mainPanel.add(mainPageContentPanel, BorderLayout.CENTER);
       frame.add(mainPanel, MAIN_PAGE_NAME);
       screens.add(MAIN_PAGE_NAME);
    }
 
    public void createJobRequestPage() {
+      JPanel mainPanel = new JPanel();
+      JPanel clientIDPanel = new JPanel();
       JPanel jobRequestPanel = new JPanel();
       JLabel header = new JLabel("Fill in the following information to submit a job request");
       JPanel jobTitleSubPanel = new JPanel();
@@ -230,6 +250,9 @@ public class VCRTSGUI {
       JLabel divider2 = new JLabel("/");
       JButton submit = new JButton("Submit Job");
       JButton back = new JButton("Back");
+
+      clientIDPanel.setLayout(new BorderLayout());
+      clientIDPanel.add(currentClientId, BorderLayout.WEST);
 
       jobTitle.setName("Job Title");
       jobTitle.addKeyListener(jobRequestListener);
@@ -276,8 +299,9 @@ public class VCRTSGUI {
 
       submit.addActionListener(jobRequestListener);
 
+      back.setName(MAIN_PAGE_NAME);
       back.addActionListener(switcher);
-      pageSwitchButtons.add(new Button(MAIN_PAGE_NAME, back));
+      pageSwitchButtons.add(back);
 
       jobDeadlineSubPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
       jobDeadlineSubPanel.setSize(40, 40);
@@ -292,11 +316,17 @@ public class VCRTSGUI {
       jobRequestPanel.add(jobDeadlineSubPanel);
       jobRequestPanel.add(submit);
       jobRequestPanel.add(back);
-      frame.add(jobRequestPanel, CREATE_JOB_REQUEST_PAGE_NAME);
+
+      mainPanel.setLayout(new BorderLayout());
+      mainPanel.add(clientIDPanel, BorderLayout.NORTH);
+      mainPanel.add(jobRequestPanel, BorderLayout.CENTER);
+      frame.add(mainPanel, CREATE_JOB_REQUEST_PAGE_NAME);
       screens.add(CREATE_JOB_REQUEST_PAGE_NAME);
    }
    
    public void createCarRentalPage() { //page for owners of vehicles to give their cars up for rent
+      JPanel mainPanel = new JPanel();
+      JPanel currentOwnerPanel = new JPanel();
       JPanel carRentalPanel = new JPanel();
       JLabel header = new JLabel("Fill in the following information to lend your car");
       JPanel makeSubPanel = new JPanel();
@@ -315,6 +345,9 @@ public class VCRTSGUI {
       JComboBox<String> rentDurationTimes = new JComboBox<String>(timeOptions);
       JButton rentCar = new JButton("Rent Car");
       JButton back = new JButton("Back");
+
+      currentOwnerPanel.setLayout(new BorderLayout());
+      currentOwnerPanel.add(currentOwnerId, BorderLayout.WEST);
 
       make.setName("Car Make");
       make.addKeyListener(rentalRequestListener);
@@ -349,8 +382,9 @@ public class VCRTSGUI {
       
       rentCar.addActionListener(rentalRequestListener);
 
+      back.setName(MAIN_PAGE_NAME);
       back.addActionListener(switcher);
-      pageSwitchButtons.add(new Button(MAIN_PAGE_NAME, back));
+      pageSwitchButtons.add(back);
 
       carRentalPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 50));
       carRentalPanel.add(header);
@@ -360,34 +394,12 @@ public class VCRTSGUI {
       carRentalPanel.add(durationSubPanel);
       carRentalPanel.add(rentCar);
       carRentalPanel.add(back);
-      frame.add(carRentalPanel, CREATE_CAR_RENTAL_PAGE_NAME);
+
+      mainPanel.setLayout(new BorderLayout());
+      mainPanel.add(currentOwnerPanel, BorderLayout.NORTH);
+      mainPanel.add(carRentalPanel, BorderLayout.CENTER);
+      frame.add(mainPanel, CREATE_CAR_RENTAL_PAGE_NAME);
       screens.add(CREATE_CAR_RENTAL_PAGE_NAME);
-   }
-   
-   class Button {
-      private JButton button;
-      private String title;
-
-      public Button(String title, JButton button) {
-         this.title = title;
-         this.button = button;
-      }
-
-      public JButton getButton() {
-         return button;
-      }
-
-      public void setButton(JButton button) {
-         this.button = button;
-      }
-
-      public String getTitle() {
-         return title;
-      }
-
-      public void setTitle(String title) {
-         this.title = title;
-      }
    }
 
    interface FieldClearer {
@@ -400,13 +412,21 @@ public class VCRTSGUI {
          String requestedPage = "";
 
          for(int i = 0; i < pageSwitchButtons.size(); i++) {
-            if(e.getSource().equals(pageSwitchButtons.get(i).getButton())) {
-               requestedPage = pageSwitchButtons.get(i).getTitle();
+            if(e.getSource().equals(pageSwitchButtons.get(i))) {
+               requestedPage = pageSwitchButtons.get(i).getName();
             }
          }
 
          for(int i = 0; i < screens.size(); i++) {
             if(requestedPage.equals(screens.get(i))) {
+               if(requestedPage.equals(CREATE_JOB_REQUEST_PAGE_NAME)) {
+                  currentClientId.setText("     Client ID: " + currentUser.getUsername());
+               }
+
+               if(requestedPage.equals(CREATE_CAR_RENTAL_PAGE_NAME)) {
+                  currentOwnerId.setText("     Owner ID: " + currentUser.getUsername());
+               }
+
                ((CardLayout)frame.getContentPane().getLayout()).show(frame.getContentPane(), screens.get(i));
                verifier.clearFields();
             }
@@ -432,6 +452,7 @@ public class VCRTSGUI {
                database.addUser(currentUser);
                database.updateDatabase("New Sign Up", currentUser);
                clearFields();
+               currentUserId.setText("     User ID: " + currentUser.getUsername());
                showMainPage();
             }
             else
@@ -442,6 +463,7 @@ public class VCRTSGUI {
                currentUser = database.getUser(this.getUsername());
                database.updateDatabase("New Login", currentUser);
                clearFields();
+               currentUserId.setText("     User ID: " + currentUser.getUsername());
                showMainPage();
             }
             else {
@@ -623,7 +645,6 @@ public class VCRTSGUI {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-         System.out.println("Months Selected: " + monthsSelected);
          if(monthsSelected) {
             this.setResidency(this.getResidency() * 30);
          }

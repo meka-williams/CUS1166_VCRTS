@@ -110,6 +110,6 @@ public class Owner extends User {
         //         "\n Residency Time: " + residencyTime + " hours" +
         //         "\n}";
 
-        return "Username: " + this.getUsername() + getRentals();
+        return "Owner ID: " + this.getUsername() + getRentals();
     }
 }
