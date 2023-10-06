@@ -3,6 +3,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +24,8 @@ import javax.swing.JTextField;
 
 public class VCRTSGUI {
    private JFrame frame = new JFrame();
+   private JDialog infoBox = new JDialog();
+   private JLabel infoBoxMessage = new JLabel("");
    private final int APP_WIDTH = 480;
    private final int APP_HEIGHT = 600;
    private final String INTRO_PAGE_NAME = "Intro Page";
@@ -48,6 +52,16 @@ public class VCRTSGUI {
       frame.setTitle("Vehicular Cloud Real Time System");
       frame.setSize(APP_WIDTH, APP_HEIGHT);
       frame.setResizable(false);
+
+      infoBoxMessage.setHorizontalAlignment(JLabel.CENTER);
+      
+      infoBox.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+      infoBox.setLayout(new BorderLayout());
+      infoBox.setSize(300, 200);
+      infoBox.setResizable(false);
+      infoBox.setLocation(700, 350);
+      infoBox.setModalityType(ModalityType.APPLICATION_MODAL);
+      infoBox.add(infoBoxMessage, BorderLayout.CENTER);
 
       startApp();
       frame.setVisible(true);
@@ -228,7 +242,7 @@ public class VCRTSGUI {
       JPanel mainPanel = new JPanel();
       JPanel clientIDPanel = new JPanel();
       JPanel jobRequestPanel = new JPanel();
-      JLabel header = new JLabel("Fill in the following information to submit a job request");
+      JLabel header = new JLabel("Fill in the following information to submit a job request.");
       JPanel jobTitleSubPanel = new JPanel();
       JLabel jobTitleLabel = new JLabel("Job Title: ");
       JTextField jobTitle = new JTextField(20);
@@ -241,7 +255,7 @@ public class VCRTSGUI {
       String[] timeOptions = {"hours", "minutes"};
       JComboBox<String> jobDurationTimes = new JComboBox<String>(timeOptions);
       JPanel jobDeadlineSubPanel = new JPanel();
-      JLabel jobDeadlineLabel = new JLabel("Job Deadline (mm/dd/yyyy)");
+      JLabel jobDeadlineLabel = new JLabel("Job Deadline (mm/dd/yyyy): ");
       JPanel dateSubPanel = new JPanel(new GridLayout(1, 5));
       JTextField month = new JTextField(2);
       JTextField day = new JTextField(2);
@@ -328,18 +342,18 @@ public class VCRTSGUI {
       JPanel mainPanel = new JPanel();
       JPanel currentOwnerPanel = new JPanel();
       JPanel carRentalPanel = new JPanel();
-      JLabel header = new JLabel("Fill in the following information to lend your car");
+      JLabel header = new JLabel("Fill in the following information to lend your car.");
       JPanel makeSubPanel = new JPanel();
-      JLabel makeLabel = new JLabel("Enter Make of Vehicle");
+      JLabel makeLabel = new JLabel("Enter Make of Vehicle: ");
       JTextField make = new JTextField(20);
       JPanel modelSubPanel = new JPanel();
-      JLabel modelLabel = new JLabel("Enter Model of Vehicle");
+      JLabel modelLabel = new JLabel("Enter Model of Vehicle: ");
       JTextField model = new JTextField(20);
       JPanel plateSubPanel = new JPanel();
-      JLabel plateLabel = new JLabel("Enter Plate Number of Vehicle");
+      JLabel plateLabel = new JLabel("Enter Plate Number of Vehicle: ");
       JTextField plate = new JTextField(20);
       JPanel durationSubPanel = new JPanel();
-      JLabel durationLabel = new JLabel("Enter Duration of Vehicle Residency");
+      JLabel durationLabel = new JLabel("Enter Duration of Vehicle Residency: ");
       JTextField duration = new JTextField(10);
       String[] timeOptions = {"days", "months"};
       JComboBox<String> rentDurationTimes = new JComboBox<String>(timeOptions);
@@ -419,12 +433,15 @@ public class VCRTSGUI {
 
          for(int i = 0; i < screens.size(); i++) {
             if(requestedPage.equals(screens.get(i))) {
+
                if(requestedPage.equals(CREATE_JOB_REQUEST_PAGE_NAME)) {
                   currentClientId.setText("     Client ID: " + currentUser.getUsername());
+                  jobRequestListener.clearFields();
                }
 
                if(requestedPage.equals(CREATE_CAR_RENTAL_PAGE_NAME)) {
                   currentOwnerId.setText("     Owner ID: " + currentUser.getUsername());
+                  rentalRequestListener.clearFields();
                }
 
                ((CardLayout)frame.getContentPane().getLayout()).show(frame.getContentPane(), screens.get(i));
@@ -455,8 +472,11 @@ public class VCRTSGUI {
                currentUserId.setText("     User ID: " + currentUser.getUsername());
                showMainPage();
             }
-            else
+            else {
                System.out.println("An error occurred, please try again.");
+               infoBoxMessage.setText("An error occurred. Please try again.");
+               infoBox.setVisible(true);
+            }
          }
          else if(((JButton)e.getSource()).getText().equals("Login")) {
             if(database.accountFound(this.getUsername(), this.getPassword())) {
@@ -468,6 +488,8 @@ public class VCRTSGUI {
             }
             else {
                System.out.println("Account not found. Please try again or create a new account.");
+               infoBoxMessage.setText("Account not found. Please try again.");
+               infoBox.setVisible(true);
             }
          }
       }
@@ -521,14 +543,26 @@ public class VCRTSGUI {
       private JTextField dayBox;
       private JTextField yearBox;
 
+      public JobRequestListener() {
+         titleBox = new JTextField();
+         descriptionBox = new JTextArea();
+         durationTimeBox = new JTextField();
+         monthBox = new JTextField();
+         dayBox = new JTextField();
+         yearBox = new JTextField();
+      }
+
       @Override
       public void actionPerformed(ActionEvent e) {
+         
          if(timeChoice.equals("hours"))
             this.setDurationTime(this.getDurationTime() * 60);
 
          if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() > 0 && 
          !month.equals("") && !day.equals("") && !year.equals("")) {
             System.out.println("Job submitted successfully");
+            infoBoxMessage.setText("Job submitted successfully!");
+            infoBox.setVisible(true);
             this.setDeadline(month + "/" + day + "/" + year);
 
             Client thisClient;
@@ -551,6 +585,8 @@ public class VCRTSGUI {
          }
          else {
             System.out.println("An error occurred. Please ensure you filled out all of the text boxes correctly.");
+            infoBoxMessage.setText("An error occurred. Please check inputs.");
+            infoBox.setVisible(true);
          }
       }
 
@@ -643,8 +679,16 @@ public class VCRTSGUI {
       private JTextField plateNumberBox;
       private JTextField residencyBox;
 
+      public CarRentalRequestListener() {
+         makeBox = new JTextField();
+         modelBox = new JTextField();
+         plateNumberBox = new JTextField();
+         residencyBox = new JTextField();
+      }
+
       @Override
       public void actionPerformed(ActionEvent e) {
+         
          if(monthsSelected) {
             this.setResidency(this.getResidency() * 30);
          }
@@ -652,6 +696,8 @@ public class VCRTSGUI {
          if(!this.getMake().equals("") && !this.getModel().equals("") && 
          !this.getLicensePlateNumber().equals("") && this.getResidency() > 0) {
             System.out.println("Car Rented Successfully");
+            infoBoxMessage.setText("Car rented successfully!");
+            infoBox.setVisible(true);
 
             Owner thisOwner;
 
@@ -674,6 +720,8 @@ public class VCRTSGUI {
          }
          else {
             System.out.println("An error occurred. Please try again. Be sure to fill out all fields correctly.");
+            infoBoxMessage.setText("An error occurred. Please check inputs.");
+            infoBox.setVisible(true);
          }
       }
 
