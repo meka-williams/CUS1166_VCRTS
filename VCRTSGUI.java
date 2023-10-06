@@ -407,50 +407,41 @@ public class VCRTSGUI {
 
          for(int i = 0; i < screens.size(); i++) {
             if(requestedPage.equals(screens.get(i))) {
-               // verifier.setUsername("");
-               // verifier.setPassword("");
                ((CardLayout)frame.getContentPane().getLayout()).show(frame.getContentPane(), screens.get(i));
+               verifier.clearFields();
             }
          }
       }
    }
 
-   class UserVerifier implements ActionListener, KeyListener {
-      private String username = "";
-      private String password = "";
+   class UserVerifier extends User implements ActionListener, KeyListener, FieldClearer {
+      private JTextField usernameBox;
+      private JPasswordField passwordBox;
 
-      public String getUsername() {
-         return username;
-      }
-
-      public void setUsername(String username) {
-         this.username = username;
-      }
-
-      public String getPassword() {
-         return password;
-      }
-
-      public void setPassword(String password) {
-         this.password = password;
+      public UserVerifier() {
+         super();
+         usernameBox = new JTextField();
+         passwordBox = new JPasswordField();
       }
 
       @Override
       public void actionPerformed(ActionEvent e) {
          if(((JButton)e.getSource()).getText().equals("Sign Up")) {
-            if(!username.equals("") && !password.equals("") && !database.isUser(username)) {
-               currentUser = new User(username, password);
+            if(!this.getUsername().equals("") && !this.getPassword().equals("") && !database.isUser(this.getUsername())) {
+               currentUser = new User(this.getUsername(), this.getPassword());
                database.addUser(currentUser);
                database.updateDatabase("New Sign Up", currentUser);
+               clearFields();
                showMainPage();
             }
             else
                System.out.println("An error occurred, please try again.");
          }
          else if(((JButton)e.getSource()).getText().equals("Login")) {
-            if(database.accountFound(username, password)) {
-               currentUser = database.getUser(username);
+            if(database.accountFound(this.getUsername(), this.getPassword())) {
+               currentUser = database.getUser(this.getUsername());
                database.updateDatabase("New Login", currentUser);
+               clearFields();
                showMainPage();
             }
             else {
@@ -475,14 +466,24 @@ public class VCRTSGUI {
 
       @Override
       public void keyReleased(KeyEvent e) {
-         if(e.getSource().getClass().getSimpleName().equals("JTextField")) {  
-            username = ((JTextField)e.getSource()).getText();
+         if(e.getSource().getClass().getSimpleName().equals("JTextField")) { 
+            usernameBox = (JTextField)e.getSource(); 
+            this.setUsername(((JTextField)e.getSource()).getText());;
          }
          if(e.getSource().getClass().getSimpleName().equals("JPasswordField")) {
-            password = String.valueOf(((JPasswordField)e.getSource()).getPassword());
+            passwordBox = (JPasswordField)e.getSource();
+            this.setPassword(String.valueOf(((JPasswordField)e.getSource()).getPassword()));
          }
       }
 
+      @Override
+      public void clearFields() {
+         usernameBox.setText("");
+         passwordBox.setText("");
+
+         this.setUsername("");
+         this.setPassword("");
+      }
    }
 
    class JobRequestListener extends Job implements KeyListener, ActionListener, ItemListener, FieldClearer {

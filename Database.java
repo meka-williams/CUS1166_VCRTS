@@ -120,11 +120,13 @@ public class Database {
 	}
 
 	public User getUser(String username) {
-		User thisUser = getClient(username);
-		if(thisUser == null) {
-			thisUser = getOwner(username);
+		for(User u: users) {
+			if(u.getUsername().equals(username)) {
+				return u;
+			}
 		}
-		return thisUser;
+		
+		return null;
 	}
 
 	public void addUser(User thisUser) {

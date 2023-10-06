@@ -7,6 +7,11 @@ public class User {
         this.password = password;
     }
 
+    public User() {
+        username = "";
+        password = "";
+    }
+
     public String getUsername() {
         return username;
     }
