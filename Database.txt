@@ -1,0 +1,2 @@
+New Sign Up|User ID: krish|Time: Wed Oct 11 14:04:19 EDT 2023
+New Job Submitted|Client ID: krish|Title: driver|Description: drive cars	|Duration Time: 240 minutes |Deadline: 11/11/2023|Time: Wed Oct 11 14:04:49 EDT 2023
