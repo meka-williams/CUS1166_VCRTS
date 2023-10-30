@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Database {
+public class Server {
 	private File database = new File("Database.txt");
 	private String data;
 	private ArrayList<User> users;
 	private ArrayList<Client> clients;
 	private ArrayList<Owner> owners;
 
-	public Database() {
+	public Server() {
 		data = "";
 		users = new ArrayList<User>();
 		clients = new ArrayList<Client>();

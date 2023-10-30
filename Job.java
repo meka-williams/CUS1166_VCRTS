@@ -1,21 +1,26 @@
+import java.time.LocalDate;
+
 public class Job {
+    private boolean inProgress;
     private String title;
     private String description;
     private int durationTime;
-    private String deadline;
+    private LocalDate deadline;
+    private Client jobOwner;
 
     public Job() {
         this.title = "";
         this.description = "";
         this.durationTime = -1;
-        this.deadline = "";
+        this.deadline = LocalDate.parse("2000-01-01");
     }
 
-    public Job(String title, String description, int durationTime, String deadline) {
+    public Job(String title, String description, int durationTime, LocalDate deadline) {
         this.title = title;
         this.description = description;
         this.durationTime = durationTime;
         this.deadline = deadline;
+        this.inProgress = true;
     }
 
     public String getTitle() {
@@ -42,12 +47,28 @@ public class Job {
         this.durationTime = durationTime;
     }
 
-    public String getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
+    }
+
+    public boolean isInProgress() {
+        return inProgress;
+    }
+
+    public void setInProgress(boolean inProgress) {
+        this.inProgress = inProgress;
+    }
+
+    public Client getJobOwner() {
+        return jobOwner;
+    }
+
+    public void setJobOwner(Client jobOwner) {
+        this.jobOwner = jobOwner;
     }
 
     @Override

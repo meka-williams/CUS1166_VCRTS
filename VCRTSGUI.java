@@ -44,7 +44,7 @@ public class VCRTSGUI {
    private JobRequestListener jobRequestListener = new JobRequestListener();
    private CarRentalRequestListener rentalRequestListener = new CarRentalRequestListener();
    private User currentUser;
-   private Database database = new Database();
+   private Server database = new Server();
    
    public VCRTSGUI() {
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -673,7 +673,7 @@ public class VCRTSGUI {
       }
    }
 
-   class CarRentalRequestListener extends Car implements KeyListener, ActionListener, ItemListener, FieldClearer {
+   class CarRentalRequestListener extends Vehicle implements KeyListener, ActionListener, ItemListener, FieldClearer {
       private boolean monthsSelected = false;
 
       private JTextField makeBox;
@@ -707,7 +707,7 @@ public class VCRTSGUI {
                thisOwner = new Owner(currentUser.getUsername(), currentUser.getPassword());
             }
 
-            Car newRental = new Car(this.getMake(), this.getModel(), this.getLicensePlateNumber(), this.getResidency());
+            Vehicle newRental = new Vehicle(this.getMake(), this.getModel(), this.getLicensePlateNumber(), this.getResidency());
             thisOwner.addRental(newRental);
 
             if(!database.isOwner(thisOwner.getUsername())) {

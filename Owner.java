@@ -8,7 +8,7 @@ public class Owner extends User {
     private String vehicleInfo;
     private String licensePlate;
     private int residencyTime;
-    private ArrayList<Car> rentals;
+    private ArrayList<Vehicle> rentals;
 
     public Owner(String firstName, String lastName, String email, Long phoneNumber, String vehicleInfo, 
     String licensePlate, int residencyTime, String username, String password) {
@@ -20,12 +20,12 @@ public class Owner extends User {
         this.vehicleInfo = vehicleInfo;
         this.licensePlate = licensePlate;
         this.residencyTime = residencyTime;
-        rentals = new ArrayList<Car>();
+        rentals = new ArrayList<Vehicle>();
     }
 
     public Owner(String username, String password) {
         super(username, password);
-        rentals = new ArrayList<Car>();
+        rentals = new ArrayList<Vehicle>();
     }
 
     public String getFirstName() {
@@ -84,14 +84,14 @@ public class Owner extends User {
         this.residencyTime = residencyTime;
     }
 
-    public void addRental(Car aCar) {
+    public void addRental(Vehicle aCar) {
         rentals.add(aCar);
     }
 
     public String getRentals() {
         String carRentals = "";
         
-        for(Car c: rentals) {
+        for(Vehicle c: rentals) {
             carRentals = carRentals.concat(String.valueOf(c));
         }
 
