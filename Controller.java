@@ -1,19 +1,14 @@
 import java.util.ArrayList;
 
 public class Controller {
-  private ArrayList<Vehicle> vehiclesArrayList;
+  private ArrayList<Car> vehiclesArrayList;
   private ArrayList<Job> jobs;
-  private Server server;
-  private int redundancyLevel;
+  
+  int redundancyLevel;
 
 
 
-  public void assignJob(Job j) {}
+public static void assignJob() {
 
-  public void triggerCheckpoint(Vehicle v) {}
-
-  public void recruitNewVehicle(Vehicle oldV, Vehicle newV) {}
-
-  public void setJobCompleted(Job j) {};
-
+}
 }
