@@ -1,5 +1,5 @@
 import java.time.LocalDate;
-
+///Users/tanvirahmed/gui/CUS1166_VCRTS/Job.java
 public class Job {
     private boolean inProgress;
     private String title;
@@ -51,8 +51,8 @@ public class Job {
         return deadline;
     }
 
-    public void setDeadline(LocalDate deadline) {
-        this.deadline = deadline;
+    public void setDeadline(String string) {
+        this.deadline = string;
     }
 
     public boolean isInProgress() {

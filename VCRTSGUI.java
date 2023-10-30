@@ -592,6 +592,9 @@ public class VCRTSGUI {
          }
       }
 
+      public void setDeadline(String string) {
+      }
+
       @Override
       public void keyTyped(KeyEvent e) {
          //Currently Unneeded
