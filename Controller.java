@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.time.Duration;
 
 public class Controller {
   private ArrayList<Vehicle> vehiclesArrayList;
@@ -31,9 +30,9 @@ public class Controller {
         for (Job job : jobs) {
             job.setDurationTime(currentTime);
             currentTime += job.getDurationTime();
-            job.setDeadline(currentTime);
+            //job.setDeadline(currentTime);
         }
-        for (Job job : controller.jobs) {
+        for (Job job : jobs) {
           System.out.println("Job ID: " + job.getDescription() + " - Completion Time: " + job.getDeadline());
       }
     }
