@@ -6,13 +6,11 @@ public class Controller {
   private Server server;
   private int redundancyLevel;
 
-
-
   public void assignJob(Job j) {}
 
   public void triggerCheckpoint(Vehicle v) {}
 
-  public void recruitNewVehicle(Vehicle oldV, Vehicle newV) {}
+  public void recruitNewVehicle(Vehicle oldV, Vehicle newV, Job j) {}
 
   public void setJobCompleted(Job j) {};
 }

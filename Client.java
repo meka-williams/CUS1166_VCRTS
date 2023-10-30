@@ -1,71 +1,30 @@
 import java.util.ArrayList;
 
 public class Client extends User {
-
-	private String firstName;
-  private String lastName;
-  private String email;
-  private String licensePlate;
-  private ArrayList<Job> jobs;
+  private ArrayList<Job> requestedJobs;
 
   public Client(String username, String password) {
     super(username, password);
-    firstName = "";
-    lastName = "";
-    email = "";
-    licensePlate = "";
-    jobs = new ArrayList<Job>();
+    requestedJobs = new ArrayList<Job>();
   }
   
-  public Client(String firstName, String lastName, String email , String licensePlate, String username, String password) {
-    super(username, password);
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
-    this.licensePlate = licensePlate;
-    jobs = new ArrayList<Job>();
+  public Client(String username, String password, String name, String email , String phoneNumber) {
+    super(username, password, name, email, phoneNumber);
+    requestedJobs = new ArrayList<Job>();
   }
 
-  public String getFirstName() {
-    return firstName;
+  public void submitJob(Job j) {
+    requestedJobs.add(j);
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getLicensePlate() {
-    return licensePlate;
-  }
-
-  public void setLicensePlate(String licensePlate) {
-    this.licensePlate = licensePlate;
-  }
-
-  public void addJobToQueue(Job j) {
-    jobs.add(j);
+  public String requestCheckpoint(Job j, Controller c) {
+    return "";
   }
 
   public String getQueuedJobs() {
     String allJobs = "";
-    for(int i = 0; i < jobs.size(); i++) {
-      allJobs = allJobs.concat(String.valueOf(jobs.get(i)));
+    for(int i = 0; i < requestedJobs.size(); i++) {
+      allJobs = allJobs.concat(String.valueOf(requestedJobs.get(i)));
     }
     return allJobs;
   }

@@ -10,6 +10,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -562,7 +563,8 @@ public class VCRTSGUI {
          if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() > 0 && 
          !month.equals("") && !day.equals("") && !year.equals("")) {
             
-            this.setDeadline(month + "/" + day + "/" + year);
+            String deadline = day + "-" + month + "-" + year;
+            this.setDeadline(LocalDate.parse(deadline));
 
             Client thisClient;
             if(database.isClient(currentUser.getUsername())) {
@@ -573,7 +575,7 @@ public class VCRTSGUI {
             }
 
             Job newJob = new Job(this.getTitle(), this.getDescription(), this.getDurationTime(), this.getDeadline());
-            thisClient.addJobToQueue(newJob);
+            thisClient.submitJob(newJob);
 
             if(!database.isClient(thisClient.getUsername())) {
                database.addClient(thisClient);
@@ -662,14 +664,14 @@ public class VCRTSGUI {
          titleBox.setText("");
          descriptionBox.setText("");
          durationTimeBox.setText("");
-         monthBox.setText("");
-         dayBox.setText("");
-         yearBox.setText("");
+         monthBox.setText("01");
+         dayBox.setText("01");
+         yearBox.setText("2000");
 
          this.setTitle("");
          this.setDescription("");
          this.setDurationTime(0);
-         this.setDeadline("");
+         this.setDeadline(LocalDate.parse("01-01-2000"));
       }
    }
 
@@ -708,7 +710,7 @@ public class VCRTSGUI {
             }
 
             Vehicle newRental = new Vehicle(this.getMake(), this.getModel(), this.getLicensePlateNumber(), this.getResidency());
-            thisOwner.addRental(newRental);
+            thisOwner.rentVehicle(newRental);
 
             if(!database.isOwner(thisOwner.getUsername())) {
                database.addOwner(thisOwner);
