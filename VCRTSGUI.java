@@ -534,9 +534,9 @@ public class VCRTSGUI {
 
    class JobRequestListener extends Job implements KeyListener, ActionListener, ItemListener, FieldClearer {
       private String timeChoice = "hours";
-      private String month;
-      private String day;
-      private String year;
+      private String month = "";
+      private String day = "";
+      private String year = "";
 
       private JTextField titleBox;
       private JTextArea descriptionBox;
@@ -563,7 +563,7 @@ public class VCRTSGUI {
          if(!this.getTitle().equals("") && !this.getDescription().equals("") && this.getDurationTime() > 0 && 
          !month.equals("") && !day.equals("") && !year.equals("")) {
             
-            String deadline = day + "-" + month + "-" + year;
+            String deadline = year + "-" + month + "-" + day;
             this.setDeadline(LocalDate.parse(deadline));
 
             Client thisClient;
@@ -664,14 +664,17 @@ public class VCRTSGUI {
          titleBox.setText("");
          descriptionBox.setText("");
          durationTimeBox.setText("");
-         monthBox.setText("01");
-         dayBox.setText("01");
-         yearBox.setText("2000");
+         month = "";
+         monthBox.setText("");
+         day = "";
+         dayBox.setText("");
+         year = "";
+         yearBox.setText("");
 
          this.setTitle("");
          this.setDescription("");
          this.setDurationTime(0);
-         this.setDeadline(LocalDate.parse("01-01-2000"));
+         this.setDeadline(LocalDate.parse("2000-01-01"));
       }
    }
 
