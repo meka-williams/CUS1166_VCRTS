@@ -1,8 +1,14 @@
+import java.time.LocalDateTime;
+
 public class Vehicle {
     private String make;
     private String model;
     private String licensePlateNumber;
     private int residency;
+    private LocalDateTime arrivalTime;
+    private LocalDateTime departureTime;
+    private Owner vehicleOwner;
+    private String computationState;
 
     public Vehicle() {
         make = "";
@@ -48,6 +54,42 @@ public class Vehicle {
     public void setResidency(int residency) {
         this.residency = residency;
     }
+
+    public LocalDateTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalDateTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public LocalDateTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalDateTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public Owner getVehicleOwner() {
+        return vehicleOwner;
+    }
+
+    public void setVehicleOwner(Owner vehicleOwner) {
+        this.vehicleOwner = vehicleOwner;
+    }
+    
+    public String getComputationState() {
+        return computationState;
+    }
+
+    public void setComputationState(String computationState) {
+        this.computationState = computationState;
+    }
+
+    public void completeJob(Job j) {}
+
+    //public void startComputationFromCheckpoint
 
     @Override
     public String toString() {

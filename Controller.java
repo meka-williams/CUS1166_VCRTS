@@ -7,10 +7,6 @@ public class Controller {
   private Server server;
   private int redundancyLevel;
 
-  Controller controller = new Controller();
-
-
-
 
   public void assignJob(Job j) {
 
@@ -23,7 +19,7 @@ public class Controller {
 
   }
 
-  public void recruitNewVehicle(Vehicle oldV, Vehicle newV) {}
+  public void recruitNewVehicle(Vehicle oldV, Vehicle newV, Job j) {}
 
   public void setJobCompleted(Job j) {
     
