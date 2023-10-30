@@ -521,7 +521,7 @@ public class VCRTSGUI {
             this.setPassword(String.valueOf(((JPasswordField)e.getSource()).getPassword()));
          }
       }
-
+      
       @Override
       public void clearFields() {
          usernameBox.setText("");
