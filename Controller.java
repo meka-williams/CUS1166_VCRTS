@@ -41,7 +41,7 @@ public class Controller {
         for (Job job : jobs) {
             job.setDurationTime(currentTime);
             currentTime += job.getDurationTime();
-            job.setDeadline(currentTime);
+            //job.setDeadline(currentTime);
         }
         for (Job job : jobs) {
           System.out.println("Job ID: " + job.getDescription() + " - Completion Time: " + job.getDeadline());
