@@ -1,80 +1,46 @@
 import java.util.ArrayList;
 
 public class Client extends User {
+  private String clientID;
+  private ArrayList<Job> requestedJobs;
 
-	private String firstName;
-  private String lastName;
-  private String email;
-  private String licensePlate;
-  private ArrayList<Job> jobs;
-
-  public Client(String username, String password) {
+  public Client(String username, String password, String clientID) {
     super(username, password);
-    firstName = "";
-    lastName = "";
-    email = "";
-    licensePlate = "";
-    jobs = new ArrayList<Job>();
+    this.clientID = clientID;
+    requestedJobs = new ArrayList<Job>();
   }
-  
-  public Client(String firstName, String lastName, String email , String licensePlate, String username, String password) {
+
+  public Client(String firstName, String lastName, String email, String licensePlate, String username, String password, String clientID) {
     super(username, password);
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
     this.licensePlate = licensePlate;
-    jobs = new ArrayList<Job>();
+    this.clientID = clientID;
+    requestedJobs = new ArrayList<Job>();
   }
 
-  public String getFirstName() {
-    return firstName;
+  public void submitJob(Job j, Controller c) {
+    requestedJobs.add(j);
+    c.processJob(j); // You can add logic here to process the job using the provided controller.
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getLicensePlate() {
-    return licensePlate;
-  }
-
-  public void setLicensePlate(String licensePlate) {
-    this.licensePlate = licensePlate;
-  }
-
-  public void addJobToQueue(Job j) {
-    jobs.add(j);
+  public String requestCheckpoint(Job j, Controller c) {
+    // You can add logic here to request a checkpoint for the specified job using the provided controller.
+    // Return a message or status string.
+    return "Checkpoint requested for job: " + j.getJobID();
   }
 
   public String getQueuedJobs() {
-    String allJobs = "";
-    for(int i = 0; i < jobs.size(); i++) {
-      allJobs = allJobs.concat(String.valueOf(jobs.get(i)));
+    StringBuilder allJobs = new StringBuilder();
+    for (Job job : requestedJobs) {
+      allJobs.append(job.toString());
     }
-    return allJobs;
+    return allJobs.toString();
   }
-  
+
   @Override
   public String toString() {
-    //return "Client Information" + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Email: " + email + "\n License Plate: " + licensePlate + "\n Username: " + this.getUsername();
-
-    return "Client ID: " + this.getUsername() + getQueuedJobs();
+    return "Client ID: " + clientID + "\nQueued Jobs:\n" + getQueuedJobs();
   }
-  
 }
